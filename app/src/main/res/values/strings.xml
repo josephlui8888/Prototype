@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">Spring Break Prototype 2</string>
+    <string name="price">Price</string>
+    <string name="lower_price">From</string>
+    <string name="upper_price">To</string>
+    <string name="apply">Apply</string>
+    <string name="sort_by">Sort by</string>
+    <string name="price_high_to_low">Price high -> low</string>
+    <string name="price_low_to_high">Price low -> high</string>
+    <string name="recent_first">Recent First</string>
+    <string name="new_listing">New Listing</string>
+    <string name="title_posting">Title</string>
+    <string name="description_posting">Description</string>
+    <string name="price_posting">Price</string>
+    <string name="category_posting">Category</string>
+    <string name="publish_posting">Publish</string>
+
+    <string name="good_or_service">Is your post a good or service?</string>
+
+    <string-array name="item_categories">
+        <item>All items</item>
+        <item>Furniture</item>
+        <item>Textbooks</item>
+        <item>Clothes</item>
+        <item>Misc.</item>
+    </string-array>
+
+    <string-array name="good_or_service_array">
+        <item>Good</item>
+        <item>Service</item>
+    </string-array>
+
+
+    <string name="password_hint">Password</string>
+    <string name="email_hint">Email</string>
+    <string name="sign_up_button_label">Sign Up</string>
+    <string name="signup_error_message">Please make sure you enter an email address and password!</string>
+    <string name="signup_error_title">Error!</string>
+    <string name="signup_success">Account successfully created! You can now Login.</string>
+    <string name="login_error_message">Please make sure you enter an email address and password!</string>
+    <string name="login_error_title">Error!</string>
+    <string name="login_button_label">Login</string>
+    <string name="sign_up_text">Sign Up!</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="add_item">Add New Item</string>
+    <string name="action_logout">Logout</string>
+
+</resources>
