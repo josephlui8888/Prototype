@@ -37,8 +37,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.textView.setText(NumberFormat.getCurrencyInstance().format(data[position].getPrice()));
-        holder.textView2.setText(data[position].getTitle());
-        String s = data[position].getDescription();
+        String s = data[position].getTitle();
+        if (s.length() >= 30) {
+            s = s.substring(0, 27) + "...";
+        }
+        holder.textView2.setText(s);
+        s = data[position].getDescription();
         if (s.length() >= 36) {
             s = s.substring(0, 34) + "...";
         }

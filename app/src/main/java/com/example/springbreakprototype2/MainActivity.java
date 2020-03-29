@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void startPrototype (View view) {
         Intent intent = new Intent(this, HomeActivity.class);
+        Toast.makeText(getApplicationContext(), this.toString(), Toast.LENGTH_SHORT).show();
         Bundle extras = new Bundle();
         extras.putString("PREVIOUS", "MAIN");
         extras.putDouble("LOWER_PRICE", -1);
@@ -24,6 +26,11 @@ public class MainActivity extends AppCompatActivity {
         extras.putString("SORT_BY", "Recent First");
         extras.putString("GOOD_SERVICE", "good");
         intent.putExtras(extras);
+        startActivity(intent);
+    }
+
+    public void testSignin (View view) {
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
 }
