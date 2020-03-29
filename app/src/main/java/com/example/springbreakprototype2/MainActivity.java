@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         extras.putString("CATEGORIES", "All items");
         extras.putString("SORT_BY", "Recent First");
         extras.putString("GOOD_SERVICE", "good");
+        extras.putString("USERNAME", "anonymous");
         intent.putExtras(extras);
         startActivity(intent);
     }

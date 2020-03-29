@@ -16,7 +16,7 @@ public class ViewPostingActivity extends AppCompatActivity {
     private Button contact;
 
     private Double lower_price, upper_price;
-    private String sort_by, categories_value, good_service_value;
+    private String sort_by, categories_value, good_service_value, user_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,7 @@ public class ViewPostingActivity extends AppCompatActivity {
         sort_by = extras.getString("SORT_BY");
         categories_value = extras.getString("CATEGORIES");
         good_service_value = extras.getString("GOOD_SERVICE");
+        user_name = extras.getString("USERNAME");
 
         //need to change to currency
         priceView.setText("$" + (extras.getDouble("PRODUCT_PRICE")));
@@ -57,7 +58,7 @@ public class ViewPostingActivity extends AppCompatActivity {
         extras.putString("SORT_BY", sort_by);
         extras.putString("CATEGORIES", categories_value);
         extras.putString("GOOD_SERVICE", good_service_value);
-
+        extras.putString("USERNAME", user_name);
 
         intent.putExtras(extras);
         startActivity(intent);

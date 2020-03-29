@@ -18,7 +18,7 @@ public class PostingActivity extends AppCompatActivity {
     private TextView good_service;
     private EditText title, description, price;
     private Spinner categories;
-    private String type, title_value, description_value, category_value;
+    private String type, title_value, description_value, category_value, user_name;
     private Double price_value;
     private FirebaseFirestore db;
     private String[] list_categories;
@@ -42,6 +42,7 @@ public class PostingActivity extends AppCompatActivity {
         Intent intent = getIntent();
         extras = intent.getExtras();
         type = extras.getString("GOOD_SERVICE");
+        user_name = extras.getString("USERNAME");
         good_service.setText(type);
 
 
@@ -68,8 +69,7 @@ public class PostingActivity extends AppCompatActivity {
         } else {
             price_value = Double.parseDouble(s);
 
-            //NEED TO CHANGE JOSEPH TO NAME OF USER
-            addToDatabase(title_value, description_value, category_value, "Joseph", price_value);
+            addToDatabase(title_value, description_value, category_value, user_name, price_value);
             Toast.makeText(getApplicationContext(), "Title: " + title_value + " , Description: " +
                             description_value + " , Category: " + category_value + " , Price: " + price_value
                     , Toast.LENGTH_LONG).show();

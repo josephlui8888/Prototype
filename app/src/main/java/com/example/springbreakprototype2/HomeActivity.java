@@ -41,7 +41,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
     private ArrayList<Product> data = new ArrayList<Product>();
 
     private Double lower_price, upper_price;
-    private String sort_by, categories_value, good_service_value;
+    private String sort_by, categories_value, good_service_value, user_name;
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -64,6 +64,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         sort_by = extras.getString("SORT_BY");
         categories_value = extras.getString("CATEGORIES");
         good_service_value = extras.getString("GOOD_SERVICE");
+        user_name = extras.getString("USERNAME");
 
         test = (TextView) findViewById(R.id.test);
 
@@ -109,6 +110,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         extras.putString("SORT_BY", sort_by);
         extras.putString("CATEGORIES", categories_value);
         extras.putString("GOOD_SERVICE", good_service_value);
+        extras.putString("USERNAME", user_name);
         extras.putDouble("PRODUCT_PRICE", p.getPrice());
         extras.putString("PRODUCT_SELLER", p.getSeller());
         extras.putString("PRODUCT_TITLE", p.getTitle());
@@ -381,6 +383,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         extras.putString("SORT_BY", sort_by);
         extras.putString("CATEGORIES", categories_value);
         extras.putString("GOOD_SERVICE", good_service_value);
+        extras.putString("USERNAME", user_name);
 
         intent.putExtras(extras);
         startActivity(intent);
@@ -421,6 +424,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         extras.putString("CATEGORIES", categories_value);
 
         extras.putString("GOOD_SERVICE", type);
+        extras.putString("USERNAME", user_name);
         intent.putExtras(extras);
         startActivity(intent);
     }

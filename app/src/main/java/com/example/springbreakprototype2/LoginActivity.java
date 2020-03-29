@@ -21,14 +21,15 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
-    EditText emailTextField, passwordTextField, passwordVerificationTextField;
-    TextView verifyPassword;
+    EditText emailTextField, passwordTextField, passwordVerificationTextField, nameField;
+    TextView verifyPassword, name;
     Button signIn, createAccount, createNewAccount, back;
     Intent intent;
     Bundle extras;
@@ -39,12 +40,18 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
+
+        //EditText
         emailTextField = findViewById(R.id.loginUsernameEdit);
         passwordTextField = findViewById(R.id.loginPasswordEdit);
         passwordVerificationTextField = findViewById(R.id.loginPasswordVerificationEdit);
+        nameField = findViewById(R.id.loginNameEdit);
 
+        //TextViews
         verifyPassword = findViewById(R.id.loginPasswordVerification);
+        name = findViewById(R.id.loginName);
 
+        //Buttons
         signIn = findViewById(R.id.button6);
         createAccount = findViewById(R.id.loginCreateAccountSubmit);
         createNewAccount = findViewById(R.id.button7);
@@ -74,13 +81,34 @@ public class LoginActivity extends AppCompatActivity {
         passwordVerificationTextField.setVisibility(View.VISIBLE);
         createAccount.setVisibility(View.VISIBLE);
         back.setVisibility(View.VISIBLE);
+        name.setVisibility(View.VISIBLE);
+        nameField.setVisibility(View.VISIBLE);
+    }
+
+    private void setProfile() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        String name = nameField.getText().toString();
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(name)
+                .build();
+
+        user.updateProfile(profileUpdates)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            //Successful update to profile
+                        }
+                    }
+                });
     }
 
     public void submitNewAccount (View view) {
         String email = emailTextField.getText().toString();
         String password = passwordVerificationTextField.getText().toString();
         String verificationPassword = passwordTextField.getText().toString();
-        if (email.equals("") || password.equals("") || verificationPassword.equals("")) {
+        String name = nameField.getText().toString();
+        if (email.equals("") || password.equals("") || verificationPassword.equals("") || name.equals("")) {
             Toast.makeText(getApplicationContext(), "Make sure all fields are filled out", Toast.LENGTH_SHORT).show();
         } else if (!password.equals(verificationPassword)) {
             Toast.makeText(getApplicationContext(), "Make sure passwords are the same", Toast.LENGTH_SHORT).show();
@@ -99,10 +127,14 @@ public class LoginActivity extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
+
                                                     Toast.makeText(getApplicationContext(), "Email verification sent", Toast.LENGTH_SHORT).show();
                                                 }
                                             }
                                         });
+
+                                setProfile();
+
                             } else {
                                 // If sign in fails, display a message to the user.
                                 //Toast.makeText(getApplicationContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
@@ -153,11 +185,16 @@ public class LoginActivity extends AppCompatActivity {
         passwordVerificationTextField.setVisibility(View.INVISIBLE);
         createAccount.setVisibility(View.INVISIBLE);
         back.setVisibility(View.INVISIBLE);
+        name.setVisibility(View.INVISIBLE);
+        nameField.setVisibility(View.INVISIBLE);
     }
 
     private void successfulSignIn(FirebaseUser user) {
         //Need to pass in user as part of intent?
+        extras.putString("USERNAME", user.getDisplayName());
         intent.putExtras(extras);
+        Toast.makeText(getApplicationContext(), user.getDisplayName() + " " + user.getEmail() + " " + user.getUid()
+                , Toast.LENGTH_LONG).show();
         startActivity(intent);
     }
 

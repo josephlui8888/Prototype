@@ -17,7 +17,7 @@ public class FilterActivity extends AppCompatActivity {
     private RadioGroup sort_by;
 
     private Double lower_price_value, upper_price_value;
-    private String sort_by_value;
+    private String sort_by_value, user_name;
     private String s;
 
     @Override
@@ -37,6 +37,7 @@ public class FilterActivity extends AppCompatActivity {
         categories = extras.getString("CATEGORIES");
         sort_by_value = extras.getString("SORT_BY");
         good_service_value = extras.getString("GOOD_SERVICE");
+        user_name = extras.getString("USERNAME");
         if (lower_price_value != -1) {
             lower_price.setText(lower_price_value.toString());
         }
@@ -76,6 +77,7 @@ public class FilterActivity extends AppCompatActivity {
         extras.putString("CATEGORIES", categories);
         extras.putString("SORT_BY", s);
         extras.putString("GOOD_SERVICE", good_service_value);
+        extras.putString("USERNAME", user_name);
 
         intent.putExtras(extras);
         startActivity (intent);
