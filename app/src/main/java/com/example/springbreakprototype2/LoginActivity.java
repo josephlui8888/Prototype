@@ -193,8 +193,8 @@ public class LoginActivity extends AppCompatActivity {
         //Need to pass in user as part of intent?
         extras.putString("USERNAME", user.getDisplayName());
         intent.putExtras(extras);
-        Toast.makeText(getApplicationContext(), user.getDisplayName() + " " + user.getEmail() + " " + user.getUid()
-                , Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), user.getDisplayName() + " " + user.getEmail() + " " + user.getUid()
+        //        , Toast.LENGTH_LONG).show();
         startActivity(intent);
     }
 

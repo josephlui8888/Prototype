@@ -93,10 +93,6 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        // specify an adapter (see also next example)
-
-
-
         refreshListing();
         //Toast.makeText(getApplicationContext(), "here", Toast.LENGTH_LONG).show();
     }
@@ -159,85 +155,19 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
         if (categories_value.equals("All items")) {
-            //Change so collection is any
-//            Double upper_price2 = upper_price;
-//            if (upper_price == -1) {
-//                upper_price2 = Double.MAX_VALUE;
-//            }
 
             Query q = db.collectionGroup(collection_name);
 
-
-
-           q.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            q.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(Task<QuerySnapshot> task) {
-
                     if (task.isSuccessful()) {
-
-                        // Toast.makeText(getApplicationContext(), "here", Toast.LENGTH_SHORT).show();
                         data.clear();
-                        //int i = 0;
-                        //for (QueryDocumentSnapshot document : task.getResult()) {
-                            //Toast.makeText(getApplicationContext(), document.getData().get("price").toString(),Toast.LENGTH_LONG).show();
-                            //String s = document.getReference().getParent().getParent().collection("").toString();
-                            //String s=document.getData().get("price").toString();
-//                            i++;
-
-                            //Toast.makeText(getApplicationContext(), s,Toast.LENGTH_LONG).show();
-
-                            //Product p = new Product(12.0, "a", "a", "a");
-//                            Product p = new Product(Double.parseDouble(document.getData().get("price").toString()),
-//                                    document.getData().get("seller").toString(),
-//                                    document.getData().get("title").toString(),
-//                                    document.getData().get("description").toString());
-//                            data.add(p);
-
-                            displayDataForAll(task, sort_by, lower_price, upper_price);
-                            //Log.d(TAG, document.getId() + " => " + document.getData());
-                        //}
-//                        if (i == 0) {
-//                            Toast.makeText(getApplicationContext(), "0", Toast.LENGTH_LONG).show();
-//                        } else if (i == 1) {
-//                            Toast.makeText(getApplicationContext(), "1", Toast.LENGTH_LONG).show();
-//                        } else if (i == 2) {
-//                            Toast.makeText(getApplicationContext(), "2", Toast.LENGTH_LONG).show();
-//                        } else {
-//                            Toast.makeText(getApplicationContext(), ">2", Toast.LENGTH_LONG).show();
-//                        }
-
-
+                        displayDataForAll(task, sort_by, lower_price, upper_price);
                     }
-
                 }
             });
-            //Toast.makeText(getApplicationContext(), data.toString(), Toast.LENGTH_LONG).show();
 
-//            list_items.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                @Override
-//                public void onComplete(Task<QuerySnapshot> task) {
-//                    if (task.isSuccessful()) {
-//                        data.clear();
-//                        for (QueryDocumentSnapshot document : task.getResult()) {
-//                            Product p = new Product(Double.parseDouble(document.getData().get("price").toString()),
-//                                    document.getData().get("seller").toString(),
-//                                    document.getData().get("title").toString(),
-//                                    document.getData().get("description").toString());
-//                            data.add(p);
-//                            //Log.d(TAG, document.getId() + " => " + document.getData());
-//                        }
-//
-//                    }
-//
-//                }
-//            });
-//            if (data.size() != 0) {
-//                Toast.makeText(getApplicationContext(), ">0", Toast.LENGTH_SHORT).show();
-//            } else {
-//                Toast.makeText(getApplicationContext(), "=0", Toast.LENGTH_SHORT).show();
-//            }
-
-            //Toast.makeText(getApplicationContext(), list_items.get().toString(), Toast.LENGTH_SHORT).show();
             return;
         } else {
             list_items = db.collection("products").document(good_service_value).collection(categories_value.toLowerCase())
@@ -266,19 +196,8 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
             public void onComplete(Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     displayData(task, sort_by);
-//                    boolean hasItem = false;
-//                    for (QueryDocumentSnapshot document : task.getResult()) {
-//                        hasItem = true;
-//                        displayData(task);
-//                        //Log.d(TAG, document.getId() + " => " + document.getData());
-//                    }
-//                    if (!hasItem) {
-//
-//                    }
                 } else {
-                    Toast.makeText(getApplicationContext(), "Failed"
-                            , Toast.LENGTH_LONG).show();
-                    //Log.d(TAG, "Error getting documents: ", task.getException());
+                    Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -424,6 +343,21 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         extras.putString("CATEGORIES", categories_value);
 
         extras.putString("GOOD_SERVICE", type);
+        extras.putString("USERNAME", user_name);
+        intent.putExtras(extras);
+        startActivity(intent);
+    }
+
+    public void viewProfile (View view) {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        Bundle extras = new Bundle();
+
+        extras.putDouble("LOWER_PRICE", lower_price);
+        extras.putDouble("UPPER_PRICE", upper_price);
+        extras.putString("SORT_BY", sort_by);
+        extras.putString("CATEGORIES", categories_value);
+
+        extras.putString("GOOD_SERVICE", "good");
         extras.putString("USERNAME", user_name);
         intent.putExtras(extras);
         startActivity(intent);
