@@ -112,7 +112,9 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Make sure all fields are filled out", Toast.LENGTH_SHORT).show();
         } else if (!password.equals(verificationPassword)) {
             Toast.makeText(getApplicationContext(), "Make sure passwords are the same", Toast.LENGTH_SHORT).show();
-        } else if (!(email.substring(email.length() - 8).equals("@umd.edu")) && !(email.substring(email.length() - 17).equals("@terpmail.umd.edu"))) {
+        } else if (email.length() < 8) {
+            Toast.makeText(getApplicationContext(), "Enter your @umd.edu email or @terpmail.umd.edu address: ", Toast.LENGTH_SHORT).show();
+        } else if (!(email.substring(email.length() - 8).equals("@umd.edu")) && (email.length() < 17 || !(email.substring(email.length()-17).equals("@terpmail.umd.edu")))) {
             Toast.makeText(getApplicationContext(), "Enter your @umd.edu email or @terpmail.umd.edu address: ", Toast.LENGTH_SHORT).show();
         } else {
             mAuth.createUserWithEmailAndPassword(email, password)
