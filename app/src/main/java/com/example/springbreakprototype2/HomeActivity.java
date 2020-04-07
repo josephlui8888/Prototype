@@ -2,6 +2,7 @@ package com.example.springbreakprototype2;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -90,7 +91,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         recyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
-        layoutManager = new LinearLayoutManager(this);
+        layoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layoutManager);
 
         refreshListing();
@@ -107,6 +108,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         extras.putString("CATEGORIES", categories_value);
         extras.putString("GOOD_SERVICE", good_service_value);
         extras.putString("USERNAME", user_name);
+        extras.putString("BACK", "home");
         extras.putDouble("PRODUCT_PRICE", p.getPrice());
         extras.putString("PRODUCT_SELLER", p.getSeller());
         extras.putString("PRODUCT_TITLE", p.getTitle());
@@ -137,7 +139,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         });
 
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerView.setAdapter(adapter);
     }
 

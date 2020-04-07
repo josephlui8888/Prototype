@@ -9,6 +9,7 @@ public class Product implements Comparable{
     private String seller, title, description, category;
     private Object timestamp;
     private static String sortMethod = "Recent";
+    private String id = "", goodService;
 
     public Product (Double price, String seller, String title, String description, Object time, String category) {
         this.price = price;
@@ -17,6 +18,8 @@ public class Product implements Comparable{
         this.description = description;
         this.timestamp = time;
         this.category = category;
+        //this.goodService = good_service;
+
     }
 
     public HashMap<String, String> getData() {
@@ -49,6 +52,22 @@ public class Product implements Comparable{
         return description;
     }
     public String getCategory() { return category; }
+
+    public void setId(String s) {
+        this.id = s;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setGoodService(String s) {
+        this.goodService = s;
+    }
+
+    public String getGoodService() {
+        return this.goodService;
+    }
 
     public void setTime(String s) {
         timestamp = s;

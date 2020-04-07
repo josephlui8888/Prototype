@@ -56,6 +56,8 @@ public class ProfileActivity extends AppCompatActivity {
                     document.getData().get("time"),
                     document.getData().get("category").toString());
             data.add(p);
+            p.setId(document.getId());
+            p.setGoodService(document.getReference().getParent().getParent().getParent().getParent().getId());
         }
         Product[] data2 = new Product[data.size()];
         for (int i = 0; i < data.size(); i++) {
@@ -74,8 +76,33 @@ public class ProfileActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
+    public void logout(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
     private void viewPosting(Product p) {
-        Toast.makeText(getApplicationContext(), p.getCategory(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, ViewPostingActivity.class);
+        Bundle extras = new Bundle();
+
+        extras.putDouble("LOWER_PRICE", lower_price);
+        extras.putDouble("UPPER_PRICE", upper_price);
+        extras.putString("SORT_BY", sort_by);
+        extras.putString("CATEGORIES", categories_value);
+        extras.putString("GOOD_SERVICE", good_service_value);
+        extras.putString("USERNAME", user_name);
+        extras.putString("BACK", "profile");
+        extras.putDouble("PRODUCT_PRICE", p.getPrice());
+        extras.putString("PRODUCT_SELLER", p.getSeller());
+        extras.putString("PRODUCT_TITLE", p.getTitle());
+        extras.putString("PRODUCT_DESCRIPTION", p.getDescription());
+        extras.putString("PRODUCT_TIMESTAMP", p.getTime().toString());
+        extras.putString("PRODUCT_CATEGORY", p.getCategory());
+        extras.putString("PRODUCT_ID", p.getId());
+        extras.putString("PRODUCT_GOOD_SERVICE", p.getGoodService());
+
+        intent.putExtras(extras);
+        startActivity(intent);
     }
 
     public void viewLikes(View view) {
