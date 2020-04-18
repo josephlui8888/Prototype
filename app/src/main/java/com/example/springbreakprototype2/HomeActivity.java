@@ -1,5 +1,6 @@
 package com.example.springbreakprototype2;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -32,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, GoodServiceDialogFragment.NoticeDialogListener{
+public class HomeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, GoodServiceDialogFragment.NoticeDialogListener {
     private TextView test;
     private Spinner categories;
     private String[] list_categories_good = {"All items", "Furniture", "Textbooks", "Clothes", "Misc."};
@@ -96,6 +99,48 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 
         refreshListing();
         //Toast.makeText(getApplicationContext(), "here", Toast.LENGTH_LONG).show();
+
+        //it's time for a nav bar
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setOnNavigationItemSelectedListener(navListener);
+    }
+
+    //the nav bar listener
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                    switch(menuItem.getItemId()){
+                        case R.id.nav_goods:
+                            good_service_value = "good";
+                            updateSpinner();
+                            break;
+                        case R.id.nav_services:
+                            good_service_value = "service";
+                            updateSpinner();
+                            break;
+                        case R.id.nav_sell:
+                            GoodServiceDialogFragment posting = new GoodServiceDialogFragment();
+                            posting.show(getSupportFragmentManager(), "test");
+                            break;
+                    }
+                    return true;
+                }
+            };
+
+    //If selected good
+    public void onDialogGoodClick(DialogFragment dialog) {
+        goPostingEvent("good");
+    }
+
+    //If selected service
+    public void onDialogServiceClick(DialogFragment dialog) {
+        goPostingEvent("service");
+    }
+
+    //some leftover blank method idk
+    public void clickItem(View view) {
+        //Toast.makeText(getApplicationContext(),view.getId(),Toast.LENGTH_SHORT).show();
     }
 
     public void viewPosting(Product p) {
@@ -310,30 +355,6 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         startActivity(intent);
     }
 
-    //When click add posting button, prompt popup to ask if good or service
-    public void addPosting (View view) {
-        GoodServiceDialogFragment posting = new GoodServiceDialogFragment();
-
-        posting.show(getSupportFragmentManager(), "test");
-    }
-
-    //If selected good
-    public void onDialogGoodClick(DialogFragment dialog) {
-        //Toast.makeText(getApplicationContext(), "Good", Toast.LENGTH_SHORT).show();
-        goPostingEvent("good");
-    }
-
-    public void clickItem(View view) {
-
-//        Toast.makeText(getApplicationContext(),view.getId(),Toast.LENGTH_SHORT).show();
-    }
-
-    //If selected service
-    public void onDialogServiceClick(DialogFragment dialog) {
-        //Toast.makeText(getApplicationContext(), "Service", Toast.LENGTH_SHORT).show();
-        goPostingEvent("service");
-    }
-
     //Go to posting event page
     public void goPostingEvent (String type) {
         Intent intent = new Intent(this, PostingActivity.class);
@@ -365,27 +386,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         startActivity(intent);
     }
 
-    //Change good_service_value to good, then call update spinner
-    public void setGoodButton(View view) {
-        if (good_service_value.equals("service")) {
-            good_service_value = "good";
-            updateSpinner();
-            //Don't think need refreshListing();
-            //refreshListing();
-        }
-        //Somehow change to show good is selected?
-    }
 
-    //Change good_service_value to service, then call update spinner
-    public void setServiceButton(View view) {
-        if (good_service_value.equals("good")) {
-            good_service_value = "service";
-            updateSpinner();
-            //Don't think need refreshListing();
-            //refreshListing();
-        }
-        //Change to show service is selected?
-    }
 
     //Update spinner based on good_service_value (either good/service listing), then refresh page
     public void updateSpinner() {
