@@ -16,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <SearchView
+            android:visibility="invisible"
             android:layout_width="113dp"
             android:layout_height="45dp"
             android:layout_marginStart="266dp"
