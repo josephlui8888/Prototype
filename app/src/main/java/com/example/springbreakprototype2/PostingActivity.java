@@ -1,17 +1,30 @@
 package com.example.springbreakprototype2;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.content.ClipData;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class PostingActivity extends AppCompatActivity {
@@ -24,6 +37,7 @@ public class PostingActivity extends AppCompatActivity {
     private String[] list_categories;
     private String[] list_categories_good = {"Furniture", "Textbooks", "Clothes", "Misc."};
     private String[] list_categories_service = {"Tutoring", "Moving", "Haircuts"};
+    private static final int RESULT_LOAD_IMAGES = 1;
     Bundle extras;
 
     @Override
@@ -84,6 +98,53 @@ public class PostingActivity extends AppCompatActivity {
 
     }
 
+    public void uploadImages(View view) {
+        // check for gallery access permissions
+        if(ActivityCompat.checkSelfPermission(PostingActivity.this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(PostingActivity.this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
+            return;
+        }
+
+        // access gallery
+        Intent uploadIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        uploadIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        uploadIntent.setType("image/*");
+        startActivityForResult(uploadIntent, RESULT_LOAD_IMAGES);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == RESULT_LOAD_IMAGES && resultCode == RESULT_OK && data != null) {
+
+            List<Uri> imageUris = new ArrayList<>();
+            ClipData clipData = data.getClipData();
+
+            if(clipData != null) {
+                for(int i = 0; i < clipData.getItemCount(); i++) {
+                    Uri imageUri = clipData.getItemAt(i).getUri();
+                    imageUris.add(imageUri);
+                }
+            } else {
+                imageUris.add(data.getData());
+            }
+
+            LinearLayout layout = findViewById(R.id.imagesLinear);
+            for (int i = 0; i < imageUris.size(); i++) {
+                ImageView imageView = new ImageView(this);
+                imageView.setId(i);
+                imageView.setPadding(10, 2, 10, 2);
+                imageView.setImageURI(imageUris.get(i));
+                imageView.setAdjustViewBounds(true);
+                imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                layout.addView(imageView);
+            }
+
+            ImageView uploadImages = findViewById(R.id.uploadImages);
+            uploadImages.setVisibility(View.GONE);
+        }
+    }
 
     private void addToDatabase (String title, String description, String category, String seller, Double price) {
 

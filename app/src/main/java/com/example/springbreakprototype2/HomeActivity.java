@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -267,6 +268,13 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                         document.getData().get("description").toString(),
                         document.getData().get("time"),
                         document.getData().get("category").toString());
+                Object time = document.getData().get("time");
+                String timestamp = "null";
+                if(time != null){
+                    timestamp = time.toString();
+                }
+                Log.d("timestamp", timestamp);
+
                 data.add(p);
                 //For some reason, document.getData().get("time") is null when the item is first created, but is no longer after going
                 //to a different page. idk why lol

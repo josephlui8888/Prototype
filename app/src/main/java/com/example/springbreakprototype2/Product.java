@@ -90,14 +90,14 @@ public class Product implements Comparable{
             //uhh so problem with timestamp maybe being null when first created? idk if thats the reason hopefully this fixes it
             //i dont rly know what to do with it lol someone smarter than me pls fix it
             if (timestamp == null || timestamp.toString().equals("")) {
-                s1 = "=" + Double.MAX_VALUE + ",";
+                s1 = "=" + Long.MAX_VALUE + ",";
             } else {
                 s1 = timestamp.toString();
             }
 
             String s2;
             if (time == null || time.toString().equals("")) {
-                s2 = "=" + Double.MAX_VALUE + ",";
+                s2 = "=" + Long.MAX_VALUE + ",";
             } else {
                 s2 = time.toString();
             }
