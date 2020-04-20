@@ -5,9 +5,9 @@
     <string name="upper_price">To</string>
     <string name="apply">Apply</string>
     <string name="sort_by">Sort by</string>
-    <string name="price_high_to_low">Price high -> low</string>
-    <string name="price_low_to_high">Price low -> high</string>
-    <string name="recent_first">Recent First</string>
+    <string name="price_high_to_low">Price - High to Low</string>
+    <string name="price_low_to_high">Price - Low to High</string>
+    <string name="recent_first">Newest First</string>
     <string name="new_listing">New Listing</string>
     <string name="title_posting">Title</string>
     <string name="description_posting">Description</string>
