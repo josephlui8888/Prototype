@@ -20,6 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -29,7 +31,6 @@ import java.util.List;
 
 public class PostingActivity extends AppCompatActivity {
     private TextView good_service;
-    private EditText title, description, price;
     private Spinner categories;
     private String type, title_value, description_value, category_value, user_name;
     private Double price_value;
@@ -40,16 +41,20 @@ public class PostingActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMAGES = 1;
     Bundle extras;
 
+    //allison guessing temp
+    TextInputLayout title_text_field, description_text_field, price_text_field;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posting);
 
         good_service = findViewById(R.id.good_service);
-        title = findViewById(R.id.title);
-        description = findViewById(R.id.description);
-        price = findViewById(R.id.price);
         categories = findViewById(R.id.categories);
+
+        title_text_field = findViewById(R.id.title);
+        description_text_field = findViewById(R.id.description);
+        price_text_field = findViewById(R.id.price);
 
         db = FirebaseFirestore.getInstance();
 
@@ -74,10 +79,15 @@ public class PostingActivity extends AppCompatActivity {
 
     //Publish button, go back to home activity page
     public void publish(View view) {
-        title_value = title.getText().toString();
-        description_value = description.getText().toString();
+        title_value = title_text_field.getEditText().getText().toString();
+        description_value = description_text_field.getEditText().getText().toString();
+        String s = price_text_field.getEditText().getText().toString();
         category_value = categories.getSelectedItem().toString();
-        String s = price.getText().toString();
+
+        Toast.makeText(getApplicationContext(), title_value, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), description_value, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+
         if (title_value.equals("") || description_value.equals("") || category_value.equals("") || s.equals("")) {
             Toast.makeText(getApplicationContext(), "Must fill out all fields", Toast.LENGTH_LONG).show();
         } else {
