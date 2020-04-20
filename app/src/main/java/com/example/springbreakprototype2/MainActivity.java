@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void startPrototype (View view) {
         Intent intent = new Intent(this, HomeActivity.class);
-        Toast.makeText(getApplicationContext(), this.toString(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), this.toString(), Toast.LENGTH_SHORT).show();
         Bundle extras = new Bundle();
         extras.putString("PREVIOUS", "MAIN");
         extras.putDouble("LOWER_PRICE", -1);

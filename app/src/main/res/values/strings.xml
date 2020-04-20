@@ -18,7 +18,7 @@
     <string name="good_or_service">Is your post a good or service?</string>
 
     <string-array name="item_categories">
-        <item>All items</item>
+        <item>All goods</item>
         <item>Furniture</item>
         <item>Textbooks</item>
         <item>Clothes</item>

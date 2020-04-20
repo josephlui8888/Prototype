@@ -39,10 +39,9 @@ import java.util.List;
 public class HomeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, GoodServiceDialogFragment.NoticeDialogListener {
     private TextView test;
     private Spinner categories;
-    private String[] list_categories_good = {"All items", "Furniture", "Textbooks", "Clothes", "Misc."};
-    private String[] list_categories_service = {"All items", "Tutoring", "Moving", "Haircuts"};
+    private String[] list_categories_good = {"All goods", "Furniture", "Textbooks", "Clothes", "Misc."};
+    private String[] list_categories_service = {"All services", "Tutoring", "Moving", "Haircuts"};
     private String[] list_categories;
-    private Product[] myDataset;
     private ArrayList<Product> data = new ArrayList<Product>();
 
     private Double lower_price, upper_price;
@@ -94,16 +93,18 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         // in content do not change the layout size of the RecyclerView
         recyclerView.setHasFixedSize(true);
 
-        // use a linear layout manager
+        // use a grid layout manager
         layoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layoutManager);
 
-        refreshListing();
+
         //Toast.makeText(getApplicationContext(), "here", Toast.LENGTH_LONG).show();
 
         //it's time for a nav bar
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
+
+        updateSpinner();
     }
 
     //the nav bar listener
@@ -168,6 +169,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 
     //Looks
     public void refreshListing2(Product[] data2) {
+        //Toast.makeText(getApplicationContext(), data2.length + "", Toast.LENGTH_LONG).show();
 //        Product[] data = new ProductData[data2.length];
 //        for (int i = 0; i < data2.length; i++) {
 //            data[i] = new IconData(data2[i], android.R.drawable.ic_delete);
@@ -176,6 +178,11 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 //                new IconData("Delete", android.R.drawable.ic_delete),
 //                new IconData("Alert", android.R.drawable.ic_dialog_alert)
 //        };
+
+        if (data2.length == 0) {
+            refreshListing();
+            //Toast.makeText(getApplicationContext(),"infinite loop?", Toast.LENGTH_SHORT).show();
+        }
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         ProductAdapter adapter = new ProductAdapter(data2, new ProductAdapter.onItemClickListener() {
             @Override
@@ -183,6 +190,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                 viewPosting(p);
             }
         });
+
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
@@ -192,6 +200,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
     //Looks at all filters/good or service/category to then call displayData/displayDataForAll
     public void refreshListing() {
         CollectionReference list_items;
+
         //Use good_service_value for good/service, use categories_value for the category, use lower_price/upper_price, sort_by
         //Toast.makeText(getApplicationContext(), "here", Toast.LENGTH_SHORT);
 
@@ -202,7 +211,8 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
             collection_name = "service_price";
         }
 
-        if (categories_value.equals("All items")) {
+        //Toast.makeText(getApplicationContext(), categories_value,Toast.LENGTH_LONG).show();
+        if (categories_value.equals("All goods") || categories_value.equals("All services")) {
 
             Query q = db.collectionGroup(collection_name);
 
@@ -212,6 +222,8 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                     if (task.isSuccessful()) {
                         data.clear();
                         displayDataForAll(task, sort_by, lower_price, upper_price);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Failed",Toast.LENGTH_LONG).show();
                     }
                 }
             });
@@ -268,13 +280,6 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                         document.getData().get("description").toString(),
                         document.getData().get("time"),
                         document.getData().get("category").toString());
-                Object time = document.getData().get("time");
-                String timestamp = "null";
-                if(time != null){
-                    timestamp = time.toString();
-                }
-                Log.d("timestamp", timestamp);
-
                 data.add(p);
                 //For some reason, document.getData().get("time") is null when the item is first created, but is no longer after going
                 //to a different page. idk why lol
@@ -284,8 +289,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 //                }
             }
         }
-        myDataset = new Product[data.size()];
-
+        Product[] myDataset = new Product[data.size()];
         if (sorting.equals("Recent First")) {
             Product.setSortMethod("Recent");
         } else if (sorting.equals("Price high -> low")) {
@@ -300,8 +304,10 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
             myDataset[counter] = p;
             counter++;
         }
+        //Toast.makeText(getApplicationContext(), myDataset[0].getTitle() + "", Toast.LENGTH_LONG).show();
 
-            refreshListing2(myDataset);
+        refreshListing2(myDataset);
+        //Toast.makeText(getApplicationContext(), myDataset[0].getTitle() + ":here", Toast.LENGTH_LONG).show();
     }
 
     //Takes task, sorting method, then creates dataset to display (for sorting when not All items)
@@ -321,7 +327,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 //            break;
             //Log.d(TAG, document.getId() + " => " + document.getData());
         }
-        myDataset = new Product[data.size()];
+        Product[] myDataset = new Product[data.size()];
         if (sorting.equals("Recent First")) {
             Product.setSortMethod("Recent");
             Collections.sort(data);

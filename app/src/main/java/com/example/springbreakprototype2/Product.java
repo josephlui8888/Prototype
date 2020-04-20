@@ -77,7 +77,7 @@ public class Product implements Comparable{
         return timestamp;
     }
 
-    //CHANGE THIS
+    //TODO: this should return the first picture for each listing
     public int getImgId() {
         return android.R.drawable.ic_delete;
     }

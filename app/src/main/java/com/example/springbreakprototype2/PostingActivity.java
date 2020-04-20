@@ -59,8 +59,10 @@ public class PostingActivity extends AppCompatActivity {
         extras = intent.getExtras();
         type = extras.getString("GOOD_SERVICE");
         user_name = extras.getString("USERNAME");
-        good_service.setText(type);
-
+        if (type.equals("good")) {
+            good_service.setText("New Posting for Goods");
+        } else
+            good_service.setText("New Posting for Services");
 
         if (type.equals("service")) {
             list_categories = list_categories_service;
@@ -124,6 +126,7 @@ public class PostingActivity extends AppCompatActivity {
             List<Uri> imageUris = new ArrayList<>();
             ClipData clipData = data.getClipData();
 
+            // clipData is null if only one picture selected
             if(clipData != null) {
                 for(int i = 0; i < clipData.getItemCount(); i++) {
                     Uri imageUri = clipData.getItemAt(i).getUri();
@@ -133,6 +136,7 @@ public class PostingActivity extends AppCompatActivity {
                 imageUris.add(data.getData());
             }
 
+            // displaying all selected pictures in the linear layout (with horizontal scroll)
             LinearLayout layout = findViewById(R.id.imagesLinear);
             for (int i = 0; i < imageUris.size(); i++) {
                 ImageView imageView = new ImageView(this);
@@ -144,6 +148,7 @@ public class PostingActivity extends AppCompatActivity {
                 layout.addView(imageView);
             }
 
+            // make original "add pictures" view invisible
             ImageView uploadImages = findViewById(R.id.uploadImages);
             uploadImages.setVisibility(View.GONE);
         }
