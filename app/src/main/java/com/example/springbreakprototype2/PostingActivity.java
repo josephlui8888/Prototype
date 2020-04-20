@@ -160,8 +160,14 @@ public class PostingActivity extends AppCompatActivity {
     }
 
     private void addToDatabase (String title, String description, String category, String seller, Double price) {
+        String [] pi = new String [this.postingImages.length];
 
-        Product p = new Product(price, seller, title, description, FieldValue.serverTimestamp(), category, this.postingImages);
+        for (int i = 0; i < this.postingImages.length; i++) {
+            pi[i] = this.postingImages[i] + ""; // cast to string
+        }
+
+        Product p = new Product(price, seller, title, description, FieldValue.serverTimestamp(), category, pi);
+
         if (type.toLowerCase().equals("good")) {
             db.collection("products").document(type.toLowerCase()).collection(category.toLowerCase())
                     .document("temp").collection("good_price").add(p);

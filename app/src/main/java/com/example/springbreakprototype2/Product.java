@@ -11,9 +11,9 @@ public class Product implements Comparable{
     private static String sortMethod = "Recent";
     private String id = "";
     private String goodService;
-    private int [] postingImages;
+    private String [] postingImages;
 
-    public Product (Double price, String seller, String title, String description, Object time, String category, int [] postingImages) {
+    public Product (Double price, String seller, String title, String description, Object time, String category, String [] postingImages) {
         this.price = price;
         this.seller = seller;
         this.title = title;
@@ -21,18 +21,7 @@ public class Product implements Comparable{
         this.timestamp = time;
         this.category = category;
         this.postingImages = postingImages;
-        //this.goodService = good_service;
     }
-
-    /*
-    public HashMap<String, String> getData() {
-        HashMap<String, String> arr = new HashMap<String, String>();
-        arr.put("price", price.toString());
-        arr.put("seller", seller);
-        arr.put("title", title);
-        arr.put("description", description);
-        return arr;
-    } */
 
     public static void setSortMethod(String s) {
         sortMethod = s;
@@ -66,13 +55,16 @@ public class Product implements Comparable{
     }
 
     public int getThumbnailImage() {
-        return this.postingImages[0];
+        return Integer.parseInt(this.postingImages[0]);
     }
 
-    /*
-    public int [] getPostingImages() {
-        return this.postingImages;
-    */
+    public HashMap<String, String> getPostingImages() {
+        HashMap<String, String> pi = new HashMap<String, String>();
+        for (int i = 0; i < this.postingImages.length; i++) {
+            pi.put(i + "", this.postingImages[i]);
+        }
+        return pi;
+    }
 
     // setter methods
     public void setTime(String s) {

@@ -18,6 +18,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -28,9 +29,9 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseFirestore db;
 
     // TODO later set to posting Images
-    private int [] postingImages = {R.drawable.ic_launcher_foreground,
-            R.drawable.ic_account_circle_black_24dp, R.drawable.ic_chat_black_24dp,
-            R.drawable.ic_shop_black_24dp};
+    private String [] postingImages = {R.drawable.ic_launcher_foreground + "",
+            R.drawable.ic_account_circle_black_24dp + "", R.drawable.ic_chat_black_24dp + "",
+            R.drawable.ic_shop_black_24dp + ""};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

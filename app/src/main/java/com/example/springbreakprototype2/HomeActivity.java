@@ -34,6 +34,7 @@ import com.google.type.Date;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, GoodServiceDialogFragment.NoticeDialogListener {
@@ -53,9 +54,9 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
     private FirebaseFirestore db;
 
     //TODO REMOVE
-    private int [] postingImages = {R.drawable.ic_launcher_foreground,
-            R.drawable.ic_account_circle_black_24dp, R.drawable.ic_chat_black_24dp,
-            R.drawable.ic_shop_black_24dp};
+    private String [] postingImages = {R.drawable.ic_launcher_foreground + "",
+            R.drawable.ic_account_circle_black_24dp + "", R.drawable.ic_chat_black_24dp + "",
+            R.drawable.ic_shop_black_24dp + ""};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -284,6 +285,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                 String title = document.getData().get("title").toString();
                 String description = document.getData().get("description").toString();
                 String category = document.getData().get("category").toString();
+                HashMap<String, String> pi = (HashMap<String, String>) document.getData().get("postingImages");
 
                 Product p = new Product(
                         price,
@@ -334,6 +336,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
             String title = document.getData().get("title").toString();
             String description = document.getData().get("description").toString();
             String category = document.getData().get("category").toString();
+            HashMap<String, String> pi = (HashMap<String, String>) document.getData().get("postingImages");
 
             Product p = new Product(
                     price,
