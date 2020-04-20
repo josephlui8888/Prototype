@@ -32,6 +32,8 @@ import android.widget.Toast;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,6 +87,9 @@ public class PostingActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categories.setAdapter(adapter);
 
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
     }
 
     //Publish button, go back to home activity page
@@ -104,9 +109,9 @@ public class PostingActivity extends AppCompatActivity {
             } catch (IOException e) {
                 Toast.makeText(getApplicationContext(), "Failed to add to database", Toast.LENGTH_LONG).show();
             }
-            Toast.makeText(getApplicationContext(), "Title: " + title_value + " , Description: " +
-                            description_value + " , Category: " + category_value + " , Price: " + price_value
-                    , Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(), "Title: " + title_value + " , Description: " +
+//                            description_value + " , Category: " + category_value + " , Price: " + price_value
+//                    , Toast.LENGTH_LONG).show();
 
             Intent intent = new Intent(this, HomeActivity.class);
 
@@ -178,7 +183,7 @@ public class PostingActivity extends AppCompatActivity {
     // byte arrays are converted to string
     private String encodeToString(Bitmap bm){
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        bm.compress(Bitmap.CompressFormat.JPEG, 5, baos);
         byte[] b = baos.toByteArray(); // byte array
         String encodedImage = Base64.encodeToString(b, Base64.DEFAULT); // string
         return encodedImage;
@@ -202,7 +207,7 @@ public class PostingActivity extends AppCompatActivity {
         }
 
         Product p = new Product(price, seller, title, description, FieldValue.serverTimestamp(), category, pi[0], pi[1], pi[2]);
-
+        Toast.makeText(getApplicationContext(), p.toString(), Toast.LENGTH_LONG).show();
         if (type.toLowerCase().equals("good")) {
             db.collection("products").document(type.toLowerCase()).collection(category.toLowerCase())
                     .document("temp").collection("good_price").add(p);
