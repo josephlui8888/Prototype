@@ -57,8 +57,10 @@ public class PostingActivity extends AppCompatActivity {
         extras = intent.getExtras();
         type = extras.getString("GOOD_SERVICE");
         user_name = extras.getString("USERNAME");
-        good_service.setText(type);
-
+        if (type.equals("good")) {
+            good_service.setText("New Posting for Goods");
+        } else
+            good_service.setText("New Posting for Services");
 
         if (type.equals("service")) {
             list_categories = list_categories_service;
