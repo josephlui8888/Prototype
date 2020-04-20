@@ -3,6 +3,7 @@ package com.example.springbreakprototype2;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import java.util.Random;
 
 import android.Manifest;
 import android.content.ClipData;
@@ -166,7 +167,7 @@ public class PostingActivity extends AppCompatActivity {
             pi[i] = this.postingImages[i] + ""; // cast to string
         }
 
-        Product p = new Product(price, seller, title, description, FieldValue.serverTimestamp(), category, pi);
+        Product p = new Product(price, seller, title, description, FieldValue.serverTimestamp(), category, pi[0], pi[1], pi[2]);
 
         if (type.toLowerCase().equals("good")) {
             db.collection("products").document(type.toLowerCase()).collection(category.toLowerCase())

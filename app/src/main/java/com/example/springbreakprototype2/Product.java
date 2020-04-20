@@ -13,15 +13,26 @@ public class Product implements Comparable{
     private String goodService;
     private String [] postingImages;
 
-    public Product (Double price, String seller, String title, String description, Object time, String category, String [] postingImages) {
+    // product images
+    private String image0;
+    private String image1;
+    private String image2;
+
+    // for creating from the app
+    public Product (Double price, String seller, String title, String description, Object time, String category, String image0, String image1, String image2) {
         this.price = price;
         this.seller = seller;
         this.title = title;
         this.description = description;
         this.timestamp = time;
         this.category = category;
-        this.postingImages = postingImages;
+
+        // images
+        this.image0 = image0;
+        this.image1 = image1;
+        this.image2 = image2;
     }
+
 
     public static void setSortMethod(String s) {
         sortMethod = s;
@@ -54,16 +65,20 @@ public class Product implements Comparable{
         return this.id;
     }
 
-    public int getThumbnailImage() {
-        return Integer.parseInt(this.postingImages[0]);
+    public String getImage0() {
+        return this.image0;
     }
 
-    public HashMap<String, String> getPostingImages() {
-        HashMap<String, String> pi = new HashMap<String, String>();
-        for (int i = 0; i < this.postingImages.length; i++) {
-            pi.put(i + "", this.postingImages[i]);
-        }
-        return pi;
+    public String getImage1() {
+        return this.image1;
+    }
+
+    public String getImage2() {
+        return this.image2;
+    }
+
+    public int getThumbnailImage() {
+        return Integer.parseInt(this.getImage0());
     }
 
     // setter methods

@@ -53,11 +53,6 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private FirebaseFirestore db;
 
-    //TODO REMOVE
-    private String [] postingImages = {R.drawable.ic_launcher_foreground + "",
-            R.drawable.ic_account_circle_black_24dp + "", R.drawable.ic_chat_black_24dp + "",
-            R.drawable.ic_shop_black_24dp + ""};
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -285,7 +280,10 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                 String title = document.getData().get("title").toString();
                 String description = document.getData().get("description").toString();
                 String category = document.getData().get("category").toString();
-                HashMap<String, String> pi = (HashMap<String, String>) document.getData().get("postingImages");
+
+                String image0 = document.getData().get("image0").toString();
+                String image1 = document.getData().get("image1").toString();
+                String image2 = document.getData().get("image2").toString();
 
                 Product p = new Product(
                         price,
@@ -294,7 +292,9 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                         description,
                         document.getData().get("time"),
                         category,
-                        this.postingImages
+                        image0,
+                        image1,
+                        image2
                 );
                 data.add(p);
                 //For some reason, document.getData().get("time") is null when the item is first created, but is no longer after going
@@ -336,7 +336,10 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
             String title = document.getData().get("title").toString();
             String description = document.getData().get("description").toString();
             String category = document.getData().get("category").toString();
-            HashMap<String, String> pi = (HashMap<String, String>) document.getData().get("postingImages");
+
+            String image0 = document.getData().get("image0").toString();
+            String image1 = document.getData().get("image1").toString();
+            String image2 = document.getData().get("image2").toString();
 
             Product p = new Product(
                     price,
@@ -345,7 +348,9 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                     description,
                     document.getData().get("time"),
                     category,
-                    this.postingImages
+                    image0,
+                    image1,
+                    image2
             );
             data.add(p);
 //            String ssss = p.getTime().toString();

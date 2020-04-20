@@ -28,11 +28,6 @@ public class ProfileActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
 
-    // TODO later set to posting Images
-    private String [] postingImages = {R.drawable.ic_launcher_foreground + "",
-            R.drawable.ic_account_circle_black_24dp + "", R.drawable.ic_chat_black_24dp + "",
-            R.drawable.ic_shop_black_24dp + ""};
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +57,10 @@ public class ProfileActivity extends AppCompatActivity {
             String description = document.getData().get("description").toString();
             String category = document.getData().get("category").toString();
 
+            String image0 = document.getData().get("image0").toString();
+            String image1 = document.getData().get("image1").toString();
+            String image2 = document.getData().get("image2").toString();
+
             Product p = new Product(
                     price,
                     seller,
@@ -69,7 +68,9 @@ public class ProfileActivity extends AppCompatActivity {
                     description,
                     document.getData().get("time"),
                     category,
-                    this.postingImages
+                    image0,
+                    image1,
+                    image2
             );
 
             data.add(p);
