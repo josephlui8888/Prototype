@@ -3,15 +3,22 @@ package com.example.springbreakprototype2;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Random;
 
 import android.Manifest;
 import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -44,10 +51,7 @@ public class PostingActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMAGES = 1;
     Bundle extras;
 
-    //TODO remove
-    private int [] postingImages = {R.drawable.ic_launcher_foreground,
-            R.drawable.ic_account_circle_black_24dp, R.drawable.ic_chat_black_24dp,
-            R.drawable.ic_shop_black_24dp};
+    private ArrayList<Uri> postingImages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +99,11 @@ public class PostingActivity extends AppCompatActivity {
         } else {
             price_value = Double.parseDouble(s);
 
-            addToDatabase(title_value, description_value, category_value, user_name, price_value);
+            try {
+                addToDatabase(title_value, description_value, category_value, user_name, price_value);
+            } catch (IOException e) {
+                Toast.makeText(getApplicationContext(), "Failed to add to database", Toast.LENGTH_LONG).show();
+            }
             Toast.makeText(getApplicationContext(), "Title: " + title_value + " , Description: " +
                             description_value + " , Category: " + category_value + " , Price: " + price_value
                     , Toast.LENGTH_LONG).show();
@@ -144,11 +152,16 @@ public class PostingActivity extends AppCompatActivity {
 
             // displaying all selected pictures in the linear layout (with horizontal scroll)
             LinearLayout layout = findViewById(R.id.imagesLinear);
+            this.postingImages = new ArrayList<Uri>();
             for (int i = 0; i < imageUris.size(); i++) {
                 ImageView imageView = new ImageView(this);
                 imageView.setId(i);
                 imageView.setPadding(10, 2, 10, 2);
                 imageView.setImageURI(imageUris.get(i));
+
+                this.postingImages.add(imageUris.get(i));
+                Log.d("TEST", imageUris.get(i).toString());
+
                 imageView.setAdjustViewBounds(true);
                 imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 layout.addView(imageView);
@@ -160,11 +173,32 @@ public class PostingActivity extends AppCompatActivity {
         }
     }
 
-    private void addToDatabase (String title, String description, String category, String seller, Double price) {
-        String [] pi = new String [this.postingImages.length];
+    // Converts bitmap to encoded base64 string
+    // bitmaps are converted to byte arrays
+    // byte arrays are converted to string
+    private String encodeToString(Bitmap bm){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] b = baos.toByteArray(); // byte array
+        String encodedImage = Base64.encodeToString(b, Base64.DEFAULT); // string
+        return encodedImage;
+    }
 
-        for (int i = 0; i < this.postingImages.length; i++) {
-            pi[i] = this.postingImages[i] + ""; // cast to string
+    private void addToDatabase (String title, String description, String category, String seller, Double price) throws IOException {
+        int NUM_IMAGES_MAX = 3;
+        String [] pi = new String [NUM_IMAGES_MAX];
+
+        // Converts the uploaded image uri to bitmaps
+        // bitmaps are converted to byte arrays
+        // byte arrays are converted to string
+        for (int i = 0; i < NUM_IMAGES_MAX; i++) { // only allow 3 images for now
+            if (i + 1 > this.postingImages.size()) {
+                // use an empty string if an image isn't provided
+                pi[i] = "";
+            } else {
+                Bitmap bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), this.postingImages.get(i)); // uri to bitmap
+                pi[i] = this.encodeToString(bm); // bm to encoded base64 string
+            }
         }
 
         Product p = new Product(price, seller, title, description, FieldValue.serverTimestamp(), category, pi[0], pi[1], pi[2]);

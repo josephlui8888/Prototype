@@ -77,8 +77,8 @@ public class Product implements Comparable{
         return this.image2;
     }
 
-    public int getThumbnailImage() {
-        return Integer.parseInt(this.getImage0());
+    public String getThumbnailImage() {
+        return this.getImage0();
     }
 
     // setter methods

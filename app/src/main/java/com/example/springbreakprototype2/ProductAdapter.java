@@ -1,5 +1,9 @@
 package com.example.springbreakprototype2;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,8 +50,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             s = s.substring(0, 34) + "...";
         }
         holder.textView3.setText(s);
-        holder.imageView.setImageResource(data[position].getThumbnailImage());
+
+        // convert image from base64 String to image
+        String encodedImage = data[position].getThumbnailImage();
+        Bitmap image = decodeToImage(encodedImage);
+        holder.imageView.setImageBitmap(image);
         holder.bind(data[position], listener);
+    }
+
+    // returns Bitmap image representation given encoded base64 string
+    public Bitmap decodeToImage(String encodedImage) {
+        byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT); // convert to byte array
+        Bitmap image = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length); // convert to bitmap image
+        return image;
     }
 
     @Override
