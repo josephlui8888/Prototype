@@ -112,5 +112,7 @@
         app:tabBackground="@drawable/tab_selector"
         app:tabGravity="center"
         app:tabIndicatorColor="#CA0000"
-        app:tabIndicatorHeight="0dp" />
+        app:tabIndicatorHeight="0dp"
+        app:tabPaddingStart="9dp"
+        app:tabPaddingEnd="9dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
