@@ -9,19 +9,22 @@ public class Product implements Comparable{
     private String seller, title, description, category;
     private Object timestamp;
     private static String sortMethod = "Recent";
-    private String id = "", goodService;
+    private String id = "";
+    private String goodService;
+    private int [] postingImages;
 
-    public Product (Double price, String seller, String title, String description, Object time, String category) {
+    public Product (Double price, String seller, String title, String description, Object time, String category, int [] postingImages) {
         this.price = price;
         this.seller = seller;
         this.title = title;
         this.description = description;
         this.timestamp = time;
         this.category = category;
+        this.postingImages = postingImages;
         //this.goodService = good_service;
-
     }
 
+    /*
     public HashMap<String, String> getData() {
         HashMap<String, String> arr = new HashMap<String, String>();
         arr.put("price", price.toString());
@@ -29,12 +32,11 @@ public class Product implements Comparable{
         arr.put("title", title);
         arr.put("description", description);
         return arr;
-    }
+    } */
 
     public static void setSortMethod(String s) {
         sortMethod = s;
     }
-
     public static String getSortMethod() {
         return sortMethod;
     }
@@ -53,33 +55,36 @@ public class Product implements Comparable{
     }
     public String getCategory() { return category; }
 
-    public void setId(String s) {
-        this.id = s;
+    public Object getTime() {
+        return timestamp;
     }
-
+    public String getGoodService() {
+        return this.goodService;
+    }
     public String getId() {
         return this.id;
+    }
+
+    public int getThumbnailImage() {
+        return this.postingImages[0];
+    }
+
+    /*
+    public int [] getPostingImages() {
+        return this.postingImages;
+    */
+
+    // setter methods
+    public void setTime(String s) {
+        timestamp = s;
     }
 
     public void setGoodService(String s) {
         this.goodService = s;
     }
 
-    public String getGoodService() {
-        return this.goodService;
-    }
-
-    public void setTime(String s) {
-        timestamp = s;
-    }
-
-    public Object getTime() {
-        return timestamp;
-    }
-
-    //TODO: this should return the first picture for each listing
-    public int getImgId() {
-        return android.R.drawable.ic_delete;
+    public void setId(String s) {
+        this.id = s;
     }
 
     @Override

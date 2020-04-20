@@ -26,6 +26,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -41,6 +42,11 @@ public class PostingActivity extends AppCompatActivity {
     private String[] list_categories_service = {"Tutoring", "Moving", "Haircuts"};
     private static final int RESULT_LOAD_IMAGES = 1;
     Bundle extras;
+
+    //TODO remove
+    private int [] postingImages = {R.drawable.ic_launcher_foreground,
+            R.drawable.ic_account_circle_black_24dp, R.drawable.ic_chat_black_24dp,
+            R.drawable.ic_shop_black_24dp};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +106,6 @@ public class PostingActivity extends AppCompatActivity {
 
             startActivity(intent);
         }
-
     }
 
     public void uploadImages(View view) {
@@ -156,7 +161,7 @@ public class PostingActivity extends AppCompatActivity {
 
     private void addToDatabase (String title, String description, String category, String seller, Double price) {
 
-        Product p = new Product(price, seller, title, description, FieldValue.serverTimestamp(), category);
+        Product p = new Product(price, seller, title, description, FieldValue.serverTimestamp(), category, this.postingImages);
         if (type.toLowerCase().equals("good")) {
             db.collection("products").document(type.toLowerCase()).collection(category.toLowerCase())
                     .document("temp").collection("good_price").add(p);
@@ -165,13 +170,6 @@ public class PostingActivity extends AppCompatActivity {
                     .document("temp").collection("service_price").add(p);
         }
 
-//        DocumentReference dr = db.collection("products").document(type.toLowerCase()).collection(category.toLowerCase()).document();
-//        dr.set(p);
-//        if (type.toLowerCase().equals("good")) {
-//            dr.collection("good_price").add(price);
-//        } else {
-//            dr.collection("service_price").add(price);
-//        }
     }
 
 

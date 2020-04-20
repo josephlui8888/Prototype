@@ -52,6 +52,11 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private FirebaseFirestore db;
 
+    //TODO REMOVE
+    private int [] postingImages = {R.drawable.ic_launcher_foreground,
+            R.drawable.ic_account_circle_black_24dp, R.drawable.ic_chat_black_24dp,
+            R.drawable.ic_shop_black_24dp};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -274,12 +279,21 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
             Double price = Double.parseDouble(document.getData().get("price").toString());
             //Toast.makeText(getApplicationContext(), price + " " + lower + " " + upper_price2, Toast.LENGTH_LONG).show();
             if (price >= lower && price <= upper_price2) {
-                Product p = new Product(price,
-                        document.getData().get("seller").toString(),
-                        document.getData().get("title").toString(),
-                        document.getData().get("description").toString(),
+
+                String seller = document.getData().get("seller").toString();
+                String title = document.getData().get("title").toString();
+                String description = document.getData().get("description").toString();
+                String category = document.getData().get("category").toString();
+
+                Product p = new Product(
+                        price,
+                        seller,
+                        title,
+                        description,
                         document.getData().get("time"),
-                        document.getData().get("category").toString());
+                        category,
+                        this.postingImages
+                );
                 data.add(p);
                 //For some reason, document.getData().get("time") is null when the item is first created, but is no longer after going
                 //to a different page. idk why lol
@@ -314,12 +328,22 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
     private void displayData(Task<QuerySnapshot> task, String sorting) {
         data.clear();
         for (QueryDocumentSnapshot document : task.getResult()) {
-            Product p = new Product(Double.parseDouble(document.getData().get("price").toString()),
-                    document.getData().get("seller").toString(),
-                    document.getData().get("title").toString(),
-                    document.getData().get("description").toString(),
+
+            Double price = Double.parseDouble(document.getData().get("price").toString());
+            String seller = document.getData().get("seller").toString();
+            String title = document.getData().get("title").toString();
+            String description = document.getData().get("description").toString();
+            String category = document.getData().get("category").toString();
+
+            Product p = new Product(
+                    price,
+                    seller,
+                    title,
+                    description,
                     document.getData().get("time"),
-                    document.getData().get("category").toString());
+                    category,
+                    this.postingImages
+            );
             data.add(p);
 //            String ssss = p.getTime().toString();
 //            Toast.makeText(getApplicationContext(), p.getTime().toString() + " " +

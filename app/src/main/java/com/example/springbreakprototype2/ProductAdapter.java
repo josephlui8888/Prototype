@@ -31,7 +31,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         View listItem = layoutInflater.inflate(R.layout.list_item, parent, false);
         ViewHolder viewHolder = new ViewHolder(listItem);
         return viewHolder;
-
     }
 
     @Override
@@ -47,12 +46,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             s = s.substring(0, 34) + "...";
         }
         holder.textView3.setText(s);
-        holder.imageView.setImageResource(data[position].getImgId());
+        holder.imageView.setImageResource(data[position].getThumbnailImage());
         holder.bind(data[position], listener);
-
     }
-
-
 
     @Override
     public int getItemCount() {
