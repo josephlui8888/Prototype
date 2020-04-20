@@ -32,6 +32,7 @@ import java.util.List;
 public class PostingActivity extends AppCompatActivity {
     private TextView good_service;
     private Spinner categories;
+    private TextInputLayout title_text_field, description_text_field, price_text_field;
     private String type, title_value, description_value, category_value, user_name;
     private Double price_value;
     private FirebaseFirestore db;
@@ -40,9 +41,6 @@ public class PostingActivity extends AppCompatActivity {
     private String[] list_categories_service = {"Tutoring", "Moving", "Haircuts"};
     private static final int RESULT_LOAD_IMAGES = 1;
     Bundle extras;
-
-    //allison guessing temp
-    TextInputLayout title_text_field, description_text_field, price_text_field;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,10 +81,6 @@ public class PostingActivity extends AppCompatActivity {
         description_value = description_text_field.getEditText().getText().toString();
         String s = price_text_field.getEditText().getText().toString();
         category_value = categories.getSelectedItem().toString();
-
-        Toast.makeText(getApplicationContext(), title_value, Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), description_value, Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
 
         if (title_value.equals("") || description_value.equals("") || category_value.equals("") || s.equals("")) {
             Toast.makeText(getApplicationContext(), "Must fill out all fields", Toast.LENGTH_LONG).show();
