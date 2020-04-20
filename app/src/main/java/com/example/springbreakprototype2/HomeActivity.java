@@ -44,6 +44,8 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
     private String[] list_categories;
     private ArrayList<Product> data = new ArrayList<Product>();
 
+    private boolean justStarted;
+
     private Double lower_price, upper_price;
     private String sort_by, categories_value, good_service_value, user_name;
 
@@ -104,7 +106,8 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-        updateSpinner();
+        justStarted = true;
+        refreshListing();
     }
 
     //the nav bar listener
@@ -179,8 +182,9 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 //                new IconData("Alert", android.R.drawable.ic_dialog_alert)
 //        };
 
-        if (data2.length == 0) {
+        if (justStarted && data2.length == 0) {
             refreshListing();
+            justStarted = false;
             //Toast.makeText(getApplicationContext(),"infinite loop?", Toast.LENGTH_SHORT).show();
         }
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
@@ -344,6 +348,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
     //For selecting category (furniture, textbook, etc)
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
         categories_value = parent.getItemAtPosition(pos).toString();
+        justStarted = true;
         refreshListing();
         //Toast.makeText(parent.getContext(), "OnItemSelectedListener : " + parent.getItemAtPosition(pos).toString(), Toast.LENGTH_SHORT).show();
     }
@@ -416,7 +421,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         categories.setOnItemSelectedListener(this);
 
         categories.setSelection(adapter.getPosition(categories_value));
-
+        justStarted=true;
         refreshListing();
     }
 }
