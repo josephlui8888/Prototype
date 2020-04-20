@@ -48,11 +48,10 @@ public class PostingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_posting);
 
         good_service = findViewById(R.id.good_service);
-        categories = findViewById(R.id.categories);
-
         title_text_field = findViewById(R.id.title);
         description_text_field = findViewById(R.id.description);
         price_text_field = findViewById(R.id.price);
+        categories = findViewById(R.id.categories);
 
         db = FirebaseFirestore.getInstance();
 
