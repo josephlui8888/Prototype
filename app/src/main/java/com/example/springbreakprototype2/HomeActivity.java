@@ -39,8 +39,8 @@ import java.util.List;
 public class HomeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, GoodServiceDialogFragment.NoticeDialogListener {
     private TextView test;
     private Spinner categories;
-    private String[] list_categories_good = {"All items", "Furniture", "Textbooks", "Clothes", "Misc."};
-    private String[] list_categories_service = {"All items", "Tutoring", "Moving", "Haircuts"};
+    private String[] list_categories_good = {"All goods", "Furniture", "Textbooks", "Clothes", "Misc."};
+    private String[] list_categories_service = {"All services", "Tutoring", "Moving", "Haircuts"};
     private String[] list_categories;
     private Product[] myDataset;
     private ArrayList<Product> data = new ArrayList<Product>();
@@ -202,7 +202,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
             collection_name = "service_price";
         }
 
-        if (categories_value.equals("All items")) {
+        if (categories_value.equals("All goods") || categories_value.equals("All services")) {
 
             Query q = db.collectionGroup(collection_name);
 
