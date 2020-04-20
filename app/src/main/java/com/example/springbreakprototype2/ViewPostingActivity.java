@@ -1,6 +1,7 @@
 package com.example.springbreakprototype2;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ViewPostingActivity extends AppCompatActivity {
@@ -28,7 +30,14 @@ public class ViewPostingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_posting);
 
-        //Need imageView/contact?
+        //sets up viewpager for images
+        ViewPager viewPager = findViewById(R.id.viewPager);
+        ImageAdapter imageAdapter = new ImageAdapter(this);
+        viewPager.setAdapter(imageAdapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        tabLayout.setupWithViewPager(viewPager, true);
+
         priceView = findViewById(R.id.viewPostingPrice);
         titleView = findViewById(R.id.viewPostingTitle);
         descriptionView = findViewById(R.id.viewPostingDescription);
