@@ -4,30 +4,26 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Random;
 
 import android.Manifest;
 import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.springbreakprototype2.Utility;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.FieldValue;
@@ -36,7 +32,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -178,17 +173,6 @@ public class PostingActivity extends AppCompatActivity {
         }
     }
 
-    // Converts bitmap to encoded base64 string
-    // bitmaps are converted to byte arrays
-    // byte arrays are converted to string
-    private String encodeToString(Bitmap bm){
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG, 5, baos);
-        byte[] b = baos.toByteArray(); // byte array
-        String encodedImage = Base64.encodeToString(b, Base64.DEFAULT); // string
-        return encodedImage;
-    }
-
     private void addToDatabase (String title, String description, String category, String seller, Double price) throws IOException {
         int NUM_IMAGES_MAX = 3;
         String [] pi = new String [NUM_IMAGES_MAX];
@@ -202,7 +186,7 @@ public class PostingActivity extends AppCompatActivity {
                 pi[i] = "";
             } else {
                 Bitmap bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), this.postingImages.get(i)); // uri to bitmap
-                pi[i] = this.encodeToString(bm); // bm to encoded base64 string
+                pi[i] = Utility.encodeToString(bm); // bm to encoded base64 string
             }
         }
 

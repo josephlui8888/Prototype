@@ -14,13 +14,13 @@ import android.widget.Toast;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.sql.Date;
+import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 
 public class ViewPostingActivity extends AppCompatActivity {
     private Bundle extras;
-    private ImageView imageView;
-    private TextView priceView, titleView, descriptionView, categoryView, sellerView;
-    private Button contact, deletePosting;
 
     private FirebaseFirestore db;
 
@@ -32,11 +32,15 @@ public class ViewPostingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_posting);
 
+        TextView priceView, titleView, descriptionView, categoryView, sellerView, postingTimeView;
+        Button deletePosting;
+
         priceView = findViewById(R.id.viewPostingPrice);
         titleView = findViewById(R.id.viewPostingTitle);
         descriptionView = findViewById(R.id.viewPostingDescription);
         categoryView = findViewById(R.id.viewPostingCategory);
         sellerView = findViewById(R.id.viewPostingSeller);
+        postingTimeView = findViewById(R.id.viewPostingTime);
 
         deletePosting = findViewById(R.id.viewPostingDeleteButton);
 
@@ -77,8 +81,22 @@ public class ViewPostingActivity extends AppCompatActivity {
         descriptionView.setText(extras.getString("PRODUCT_DESCRIPTION"));
         categoryView.setText("CATEGORY: " + extras.getString("PRODUCT_CATEGORY"));
         sellerView.setText("SELLER: " + extras.getString("PRODUCT_SELLER"));
-        //timestamp? PRODUCT_TIMESTAMP
+        postingTimeView.setText("Posted: " + getDatetime(extras.getString("PRODUCT_TIMESTAMP")));
+    }
 
+    // convert Firebase timestamp to human readable time
+    private String getDatetime(String timestamp) {
+        if(!timestamp.contains("Timestamp")) {
+            return timestamp;
+        }
+        String seconds = timestamp.substring(timestamp.indexOf("=") + 1, timestamp.indexOf(","));
+        String nano = "nanoseconds=";
+        String nanoseconds = timestamp.substring(
+                timestamp.indexOf(nano) + nano.length(), timestamp.indexOf(")"));
+        long time = 1000*Long.parseLong(seconds) + Long.parseLong(nanoseconds)/1000000;
+
+        DateFormat dataFormat = SimpleDateFormat.getDateInstance();
+        return dataFormat.format(new Date(time));
     }
 
     public void deletePosting(View view) {
