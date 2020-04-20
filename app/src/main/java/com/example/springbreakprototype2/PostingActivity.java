@@ -4,13 +4,21 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Random;
+
 import android.Manifest;
 import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -20,17 +28,20 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
 public class PostingActivity extends AppCompatActivity {
     private TextView good_service;
-    private EditText title, description, price;
     private Spinner categories;
+    private TextInputLayout title_text_field, description_text_field, price_text_field;
     private String type, title_value, description_value, category_value, user_name;
     private Double price_value;
     private FirebaseFirestore db;
@@ -40,15 +51,17 @@ public class PostingActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMAGES = 1;
     Bundle extras;
 
+    private ArrayList<Uri> postingImages;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posting);
 
         good_service = findViewById(R.id.good_service);
-        title = findViewById(R.id.title);
-        description = findViewById(R.id.description);
-        price = findViewById(R.id.price);
+        title_text_field = findViewById(R.id.title);
+        description_text_field = findViewById(R.id.description);
+        price_text_field = findViewById(R.id.price);
         categories = findViewById(R.id.categories);
 
         db = FirebaseFirestore.getInstance();
@@ -76,16 +89,21 @@ public class PostingActivity extends AppCompatActivity {
 
     //Publish button, go back to home activity page
     public void publish(View view) {
-        title_value = title.getText().toString();
-        description_value = description.getText().toString();
+        title_value = title_text_field.getEditText().getText().toString();
+        description_value = description_text_field.getEditText().getText().toString();
+        String s = price_text_field.getEditText().getText().toString();
         category_value = categories.getSelectedItem().toString();
-        String s = price.getText().toString();
+
         if (title_value.equals("") || description_value.equals("") || category_value.equals("") || s.equals("")) {
             Toast.makeText(getApplicationContext(), "Must fill out all fields", Toast.LENGTH_LONG).show();
         } else {
             price_value = Double.parseDouble(s);
 
-            addToDatabase(title_value, description_value, category_value, user_name, price_value);
+            try {
+                addToDatabase(title_value, description_value, category_value, user_name, price_value);
+            } catch (IOException e) {
+                Toast.makeText(getApplicationContext(), "Failed to add to database", Toast.LENGTH_LONG).show();
+            }
             Toast.makeText(getApplicationContext(), "Title: " + title_value + " , Description: " +
                             description_value + " , Category: " + category_value + " , Price: " + price_value
                     , Toast.LENGTH_LONG).show();
@@ -97,7 +115,6 @@ public class PostingActivity extends AppCompatActivity {
 
             startActivity(intent);
         }
-
     }
 
     public void uploadImages(View view) {
@@ -135,11 +152,16 @@ public class PostingActivity extends AppCompatActivity {
 
             // displaying all selected pictures in the linear layout (with horizontal scroll)
             LinearLayout layout = findViewById(R.id.imagesLinear);
+            this.postingImages = new ArrayList<Uri>();
             for (int i = 0; i < imageUris.size(); i++) {
                 ImageView imageView = new ImageView(this);
                 imageView.setId(i);
                 imageView.setPadding(10, 2, 10, 2);
                 imageView.setImageURI(imageUris.get(i));
+
+                this.postingImages.add(imageUris.get(i));
+                Log.d("TEST", imageUris.get(i).toString());
+
                 imageView.setAdjustViewBounds(true);
                 imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 layout.addView(imageView);
@@ -151,9 +173,36 @@ public class PostingActivity extends AppCompatActivity {
         }
     }
 
-    private void addToDatabase (String title, String description, String category, String seller, Double price) {
+    // Converts bitmap to encoded base64 string
+    // bitmaps are converted to byte arrays
+    // byte arrays are converted to string
+    private String encodeToString(Bitmap bm){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] b = baos.toByteArray(); // byte array
+        String encodedImage = Base64.encodeToString(b, Base64.DEFAULT); // string
+        return encodedImage;
+    }
 
-        Product p = new Product(price, seller, title, description, FieldValue.serverTimestamp(), category);
+    private void addToDatabase (String title, String description, String category, String seller, Double price) throws IOException {
+        int NUM_IMAGES_MAX = 3;
+        String [] pi = new String [NUM_IMAGES_MAX];
+
+        // Converts the uploaded image uri to bitmaps
+        // bitmaps are converted to byte arrays
+        // byte arrays are converted to string
+        for (int i = 0; i < NUM_IMAGES_MAX; i++) { // only allow 3 images for now
+            if (i + 1 > this.postingImages.size()) {
+                // use an empty string if an image isn't provided
+                pi[i] = "";
+            } else {
+                Bitmap bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), this.postingImages.get(i)); // uri to bitmap
+                pi[i] = this.encodeToString(bm); // bm to encoded base64 string
+            }
+        }
+
+        Product p = new Product(price, seller, title, description, FieldValue.serverTimestamp(), category, pi[0], pi[1], pi[2]);
+
         if (type.toLowerCase().equals("good")) {
             db.collection("products").document(type.toLowerCase()).collection(category.toLowerCase())
                     .document("temp").collection("good_price").add(p);
@@ -162,13 +211,6 @@ public class PostingActivity extends AppCompatActivity {
                     .document("temp").collection("service_price").add(p);
         }
 
-//        DocumentReference dr = db.collection("products").document(type.toLowerCase()).collection(category.toLowerCase()).document();
-//        dr.set(p);
-//        if (type.toLowerCase().equals("good")) {
-//            dr.collection("good_price").add(price);
-//        } else {
-//            dr.collection("service_price").add(price);
-//        }
     }
 
 

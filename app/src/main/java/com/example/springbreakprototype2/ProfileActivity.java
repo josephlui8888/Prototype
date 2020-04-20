@@ -18,6 +18,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -49,12 +50,29 @@ public class ProfileActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view2);
         ArrayList<Product> data = new ArrayList<Product>();
         for (QueryDocumentSnapshot document : task.getResult()) {
-            Product p = new Product(Double.parseDouble(document.getData().get("price").toString()),
-                    document.getData().get("seller").toString(),
-                    document.getData().get("title").toString(),
-                    document.getData().get("description").toString(),
+
+            Double price = Double.parseDouble(document.getData().get("price").toString());
+            String seller = document.getData().get("seller").toString();
+            String title = document.getData().get("title").toString();
+            String description = document.getData().get("description").toString();
+            String category = document.getData().get("category").toString();
+
+            String image0 = document.getData().get("image0").toString();
+            String image1 = document.getData().get("image1").toString();
+            String image2 = document.getData().get("image2").toString();
+
+            Product p = new Product(
+                    price,
+                    seller,
+                    title,
+                    description,
                     document.getData().get("time"),
-                    document.getData().get("category").toString());
+                    category,
+                    image0,
+                    image1,
+                    image2
+            );
+
             data.add(p);
             p.setId(document.getId());
             p.setGoodService(document.getReference().getParent().getParent().getParent().getParent().getId());
