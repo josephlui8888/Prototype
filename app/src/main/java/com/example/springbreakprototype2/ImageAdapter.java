@@ -1,6 +1,7 @@
 package com.example.springbreakprototype2;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -8,19 +9,22 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.example.springbreakprototype2.Utility;
+
+import java.util.ArrayList;
+
 public class ImageAdapter extends PagerAdapter {
     private Context mContext;
-    private int[] mImageIds = new int[] {R.drawable.ic_launcher_foreground,
-            R.drawable.ic_account_circle_black_24dp, R.drawable.ic_chat_black_24dp,
-            R.drawable.ic_shop_black_24dp};
+    private ArrayList<String> mImageIds;
 
-    ImageAdapter(Context context) {
+    ImageAdapter(Context context, ArrayList<String> imageStrings) {
         mContext = context;
+        mImageIds = imageStrings;
     }
 
     @Override
     public int getCount() {
-        return mImageIds.length;
+        return mImageIds.size();
     }
 
     @Override
@@ -33,7 +37,9 @@ public class ImageAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         ImageView imageView = new ImageView(mContext);
         imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        imageView.setImageResource(mImageIds[position]);
+        String imageString = mImageIds.get(position);
+        Bitmap imageBitmap = Utility.decodeToImage(imageString);
+        imageView.setImageBitmap(imageBitmap);
         container.addView(imageView, 0);
         return imageView;
     }

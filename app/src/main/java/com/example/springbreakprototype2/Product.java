@@ -1,8 +1,6 @@
 package com.example.springbreakprototype2;
 
-
-import java.util.HashMap;
-
+import java.util.ArrayList;
 
 public class Product implements Comparable{
     private Double price;
@@ -75,6 +73,15 @@ public class Product implements Comparable{
 
     public String getImage2() {
         return this.image2;
+    }
+
+    public ArrayList<String> getImageStrings() {
+        ArrayList<String> imageStrings = new ArrayList<>();
+        imageStrings.add(getImage0());
+        imageStrings.add(getImage1());
+        imageStrings.add(getImage2());
+
+        return imageStrings;
     }
 
     public String getThumbnailImage() {

@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.NumberFormat;
+
 public class ViewPostingActivity extends AppCompatActivity {
     private Bundle extras;
     private ImageView imageView;
@@ -30,14 +32,6 @@ public class ViewPostingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_posting);
 
-        //sets up viewpager for images
-        ViewPager viewPager = findViewById(R.id.viewPager);
-        ImageAdapter imageAdapter = new ImageAdapter(this);
-        viewPager.setAdapter(imageAdapter);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        tabLayout.setupWithViewPager(viewPager, true);
-
         priceView = findViewById(R.id.viewPostingPrice);
         titleView = findViewById(R.id.viewPostingTitle);
         descriptionView = findViewById(R.id.viewPostingDescription);
@@ -50,6 +44,17 @@ public class ViewPostingActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         extras = intent.getExtras();
+
+        //sets up viewpager for images
+        ViewPager viewPager = findViewById(R.id.viewPager);
+        ImageAdapter imageAdapter = new ImageAdapter(this,
+                extras.getStringArrayList("IMAGE_STRINGS"));
+        viewPager.setAdapter(imageAdapter);
+
+        // dot indicators for image swiping
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        tabLayout.setupWithViewPager(viewPager, true);
+
         lower_price = extras.getDouble("LOWER_PRICE");
         upper_price = extras.getDouble("UPPER_PRICE");
         sort_by = extras.getString("SORT_BY");
@@ -66,8 +71,8 @@ public class ViewPostingActivity extends AppCompatActivity {
             deletePosting.setVisibility(View.INVISIBLE);
         }
 
-        //need to change to currency
-        priceView.setText("$" + (extras.getDouble("PRODUCT_PRICE")));
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
+        priceView.setText(currencyFormatter.format(extras.getDouble("PRODUCT_PRICE")));
         titleView.setText(extras.getString("PRODUCT_TITLE"));
         descriptionView.setText(extras.getString("PRODUCT_DESCRIPTION"));
         categoryView.setText("CATEGORY: " + extras.getString("PRODUCT_CATEGORY"));
