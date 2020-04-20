@@ -77,9 +77,15 @@ public class Product implements Comparable{
 
     public ArrayList<String> getImageStrings() {
         ArrayList<String> imageStrings = new ArrayList<>();
-        imageStrings.add(getImage0());
-        imageStrings.add(getImage1());
-        imageStrings.add(getImage2());
+        if(!getImage0().equals("")){
+            imageStrings.add(getImage0());
+        }
+        if(!getImage1().equals("")){
+            imageStrings.add(getImage1());
+        }
+        if(!getImage2().equals("")){
+            imageStrings.add(getImage2());
+        }
 
         return imageStrings;
     }
