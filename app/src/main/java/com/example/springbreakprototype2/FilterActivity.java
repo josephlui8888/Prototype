@@ -9,9 +9,11 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 public class FilterActivity extends AppCompatActivity {
-    private EditText lower_price;
-    private EditText upper_price;
+    private TextInputLayout lower_price;
+    private TextInputLayout upper_price;
     private String categories, good_service_value;
 
     private RadioGroup sort_by;
@@ -25,8 +27,8 @@ public class FilterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
 
-        lower_price = (EditText) findViewById(R.id.editTextLowerPrice);
-        upper_price = (EditText) findViewById(R.id.editTextUpperPrice);
+        lower_price = (TextInputLayout) findViewById(R.id.lower_price);
+        upper_price = (TextInputLayout) findViewById(R.id.upper_price);
         sort_by = (RadioGroup) findViewById(R.id.sortBy);
 
         Intent intent = getIntent();
@@ -39,10 +41,10 @@ public class FilterActivity extends AppCompatActivity {
         good_service_value = extras.getString("GOOD_SERVICE");
         user_name = extras.getString("USERNAME");
         if (lower_price_value != -1) {
-            lower_price.setText(lower_price_value.toString());
+            lower_price.getEditText().setText(lower_price_value.toString());
         }
         if (upper_price_value != -1) {
-            upper_price.setText(upper_price_value.toString());
+            upper_price.getEditText().setText(upper_price_value.toString());
         }
         switch(sort_by_value) {
             case "Recent First": sort_by.check(R.id.radioButtonRecentFirst); break;
@@ -57,7 +59,7 @@ public class FilterActivity extends AppCompatActivity {
         Bundle extras = new Bundle();
 
         extras.putString("PREVIOUS", "FILTER");
-        String s1 = lower_price.getText().toString(), s2 = upper_price.getText().toString();
+        String s1 = lower_price.getEditText().getText().toString(), s2 = upper_price.getEditText().getText().toString();
         if (s1.equals("")) {
             s1 = "-1";
         }
