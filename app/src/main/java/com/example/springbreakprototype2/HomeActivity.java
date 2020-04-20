@@ -94,7 +94,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         // in content do not change the layout size of the RecyclerView
         recyclerView.setHasFixedSize(true);
 
-        // use a linear layout manager
+        // use a grid layout manager
         layoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layoutManager);
 
