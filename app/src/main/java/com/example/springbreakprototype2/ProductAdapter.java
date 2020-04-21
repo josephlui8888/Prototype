@@ -3,15 +3,15 @@ package com.example.springbreakprototype2;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.springbreakprototype2.Utility;
 
 import java.text.NumberFormat;
 
@@ -53,16 +53,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
         // convert image from base64 String to image
         String encodedImage = data[position].getThumbnailImage();
-        Bitmap image = decodeToImage(encodedImage);
+        Bitmap image = Utility.decodeToImage(encodedImage);
         holder.imageView.setImageBitmap(image);
         holder.bind(data[position], listener);
-    }
-
-    // returns Bitmap image representation given encoded base64 string
-    public Bitmap decodeToImage(String encodedImage) {
-        byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT); // convert to byte array
-        Bitmap image = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length); // convert to bitmap image
-        return image;
     }
 
     @Override

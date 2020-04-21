@@ -4,12 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,23 +17,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.type.Date;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, GoodServiceDialogFragment.NoticeDialogListener {
     private TextView test;
@@ -164,8 +155,17 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         extras.putString("PRODUCT_SELLER", p.getSeller());
         extras.putString("PRODUCT_TITLE", p.getTitle());
         extras.putString("PRODUCT_DESCRIPTION", p.getDescription());
-        extras.putString("PRODUCT_TIMESTAMP", p.getTime().toString());
+
+        //hardcoding bc timestamp is null for first few seconds after creating a new listing
+        Object time = p.getTime();
+        if(time == null){
+            extras.putString("PRODUCT_TIMESTAMP", "A few seconds ago");
+        } else {
+            extras.putString("PRODUCT_TIMESTAMP", time.toString());
+        }
+
         extras.putString("PRODUCT_CATEGORY", p.getCategory());
+        extras.putStringArrayList("IMAGE_STRINGS", p.getImageStrings());
 
         intent.putExtras(extras);
         startActivity(intent);
