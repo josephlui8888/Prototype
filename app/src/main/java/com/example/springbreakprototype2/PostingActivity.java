@@ -218,5 +218,34 @@ public class PostingActivity extends AppCompatActivity {
 
     }
 
+    private void addToDatabase2 (String title, String description, String category, String seller, Double price) throws IOException {
+        int NUM_IMAGES_MAX = 3;
+        String [] pi = new String [NUM_IMAGES_MAX];
+
+        // Converts the uploaded image uri to bitmaps
+        // bitmaps are converted to byte arrays
+        // byte arrays are converted to string
+        for (int i = 0; i < NUM_IMAGES_MAX; i++) { // only allow 3 images for now
+            if (i + 1 > this.postingImages.size()) {
+                // use an empty string if an image isn't provided
+                pi[i] = "";
+            } else {
+                Bitmap bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), this.postingImages.get(i)); // uri to bitmap
+                pi[i] = this.encodeToString(bm); // bm to encoded base64 string
+            }
+        }
+
+        Product p = new Product(price, seller, title, description, FieldValue.serverTimestamp(), category, pi[0], pi[1], pi[2]);
+        Toast.makeText(getApplicationContext(), p.toString(), Toast.LENGTH_LONG).show();
+        if (type.toLowerCase().equals("good")) {
+            db.collection("products").document(type.toLowerCase()).collection(category.toLowerCase())
+                    .document("temp").collection("good_price").add(p);
+        } else {
+            db.collection("products").document(type.toLowerCase()).collection(category.toLowerCase())
+                    .document("temp").collection("service_price").add(p);
+        }
+
+    }
+
 
 }
