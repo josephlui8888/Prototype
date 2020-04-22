@@ -3,6 +3,7 @@ package com.example.springbreakprototype2;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -90,6 +91,10 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         // use a grid layout manager
         layoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layoutManager);
+//        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(),
+//                DividerItemDecoration.VERTICAL));
+//        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(),
+//                DividerItemDecoration.HORIZONTAL));
 
 
         //Toast.makeText(getApplicationContext(), "here", Toast.LENGTH_LONG).show();

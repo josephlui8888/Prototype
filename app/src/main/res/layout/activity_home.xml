@@ -4,38 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context=".HomeActivity">
 
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="fill_parent"
-        android:layout_height="73dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="80dp"
+        android:background="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <SearchView
-            android:visibility="invisible"
             android:layout_width="113dp"
             android:layout_height="45dp"
             android:layout_marginStart="266dp"
             android:layout_marginLeft="116dp"
-            android:layout_marginTop="0dp" />
+            android:layout_marginTop="0dp"
+            android:visibility="invisible" />
 
         <Spinner
             android:id="@+id/categories"
             android:layout_width="193dp"
             android:layout_height="45dp"
-            android:layout_gravity="left"
-            android:layout_marginTop="0dp"
+            android:layout_gravity="left|center_horizontal"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
             android:entries="@array/item_categories" />
 
         <ImageButton
             android:id="@+id/imageButton"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:layout_gravity="right"
+            android:layout_gravity="right|center_horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
             android:onClick="filterButton"
             app:srcCompat="@android:drawable/ic_menu_more" />
 
@@ -47,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="57dp"
         android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -64,9 +68,9 @@
         android:id="@+id/my_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="12dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
@@ -85,7 +89,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline3"
         app:layout_constraintVertical_bias="1.0"
-        app:menu="@menu/bottom_navigation"/>
+        app:menu="@menu/bottom_navigation" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
