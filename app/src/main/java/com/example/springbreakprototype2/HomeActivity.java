@@ -44,6 +44,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
+    private BottomNavigationView bottomNav;
 
     private FirebaseFirestore db;
 
@@ -57,7 +58,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
 
-        String previous = extras.getString("PREVIOUS");
+        //prev_page = extras.getString("PREVIOUS");
         lower_price = extras.getDouble("LOWER_PRICE");
         upper_price = extras.getDouble("UPPER_PRICE");
         sort_by = extras.getString("SORT_BY");
@@ -100,7 +101,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         //Toast.makeText(getApplicationContext(), "here", Toast.LENGTH_LONG).show();
 
         //it's time for a nav bar
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
         justStarted = true;
@@ -129,6 +130,20 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
                     return true;
                 }
             };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bottomNav = findViewById(R.id.bottom_navigation);
+        int selectedItemId = bottomNav.getSelectedItemId();
+        if (selectedItemId == R.id.nav_sell) {
+            if (good_service_value.equals("service")) {
+                bottomNav.getMenu().findItem(R.id.nav_services).setChecked(true);
+            } else {
+                bottomNav.getMenu().findItem(R.id.nav_goods).setChecked(true);
+            }
+        }
+    }
 
     //If selected good
     public void onDialogGoodClick(DialogFragment dialog) {
@@ -446,10 +461,24 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 
     //Update spinner based on good_service_value (either good/service listing), then refresh page
     public void updateSpinner() {
+        int selected = 0;
+        bottomNav = findViewById(R.id.bottom_navigation);
+        if(bottomNav != null) {
+            selected = bottomNav.getSelectedItemId();
+        }
+
         if (good_service_value.equals("service")) {
             list_categories = list_categories_service;
+            //this is garbage, I apologize
+            if(bottomNav != null && selected != R.id.nav_services){
+                bottomNav.getMenu().findItem(R.id.nav_services).setChecked(true);
+            }
         } else {
             list_categories = list_categories_good;
+            //apologies, again.
+            if(bottomNav != null && selected != R.id.nav_goods){
+                bottomNav.getMenu().findItem(R.id.nav_goods).setChecked(true);
+            }
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list_categories);
