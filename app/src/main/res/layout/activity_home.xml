@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="#E03A3E"
     tools:context=".HomeActivity">
 
     <FrameLayout
         android:id="@+id/frameLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="80dp"
-        android:background="#FFFFFF"
+        android:layout_width="411dp"
+        android:layout_height="51dp"
+        android:background="#CF102D"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -24,37 +24,56 @@
             android:layout_marginTop="0dp"
             android:visibility="invisible" />
 
-        <Spinner
-            android:id="@+id/categories"
-            android:layout_width="193dp"
-            android:layout_height="45dp"
-            android:layout_gravity="left|center_horizontal"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:entries="@array/item_categories" />
-
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_gravity="right|center_horizontal"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="5dp"
-            android:onClick="filterButton"
-            app:srcCompat="@android:drawable/ic_menu_more" />
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/roboto"
+            android:text="Student 2 Student"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </FrameLayout>
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_gravity="right|center_horizontal"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="#FFFFFF"
+        android:onClick="filterButton"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout"
+        app:srcCompat="@drawable/filter" />
+
+    <Spinner
+        android:id="@+id/categories"
+        android:layout_width="153dp"
+        android:layout_height="43dp"
+        android:layout_gravity="left|center_horizontal"
+        android:layout_marginStart="8dp"
+        android:entries="@array/item_categories"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
     <TextView
         android:id="@+id/test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="57dp"
+
+        android:layout_gravity="left|center_horizontal"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/roboto"
         android:text="TextView"
+        android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/categories" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"

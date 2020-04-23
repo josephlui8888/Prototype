@@ -32,7 +32,9 @@
         android:layout_marginStart="5dp"
         android:layout_marginBottom="33dp"
 
+        android:fontFamily="@font/roboto"
         android:gravity="left"
+        android:textColor="#000000"
         android:textSize="16sp" />
 
     <TextView
@@ -44,6 +46,7 @@
 
         android:layout_marginStart="5dp"
         android:layout_marginBottom="17dp"
+        android:fontFamily="@font/roboto"
         android:textSize="16sp" />
 
     <TextView
@@ -56,6 +59,7 @@
         android:layout_marginStart="13dp"
         android:layout_marginBottom="23dp"
         android:layout_toEndOf="@id/imageView"
+        android:fontFamily="@font/roboto"
         android:gravity="left"
         android:textSize="16sp"
         android:visibility="invisible" />
