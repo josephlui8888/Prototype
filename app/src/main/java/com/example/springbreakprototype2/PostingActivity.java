@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -157,7 +158,9 @@ public class PostingActivity extends AppCompatActivity {
             for (int i = 0; i < imageUris.size(); i++) {
                 ImageView imageView = new ImageView(this);
                 imageView.setId(i);
-                imageView.setPadding(10, 2, 10, 2);
+                imageView.setPadding(0, 2, 20, 2);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,800);
+                imageView.setLayoutParams(params);
                 imageView.setImageURI(imageUris.get(i));
 
                 this.postingImages.add(imageUris.get(i));
