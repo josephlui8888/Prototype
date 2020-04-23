@@ -34,19 +34,21 @@
                 android:text="TextView"
                 android:textSize="18sp" />
 
-            <ImageView
+            <Button
                 android:id="@+id/uploadImages"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginStart="8dp"
+                android:drawableStart="@drawable/ic_add_circle_outline_black_24dp"
+                android:text="Add Photos"
+                android:paddingLeft="120dp"
+                android:drawablePadding="5dp"
+                android:gravity="start|center_vertical"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:background="#00FFFFFF"
+                android:background="@drawable/add_photos_button_border"
                 android:clickable="true"
                 android:focusable="true"
                 android:onClick="uploadImages"
-                android:src="@android:drawable/ic_menu_add"
                 android:visibility="visible" />
 
             <HorizontalScrollView

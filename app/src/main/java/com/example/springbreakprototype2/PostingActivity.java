@@ -17,6 +17,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -168,7 +169,7 @@ public class PostingActivity extends AppCompatActivity {
             }
 
             // make original "add pictures" view invisible
-            ImageView uploadImages = findViewById(R.id.uploadImages);
+            Button uploadImages = findViewById(R.id.uploadImages);
             uploadImages.setVisibility(View.GONE);
         }
     }
