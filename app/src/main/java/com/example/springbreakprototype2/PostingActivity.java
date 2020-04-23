@@ -195,7 +195,6 @@ public class PostingActivity extends AppCompatActivity {
         }
 
         Product p = new Product(price, seller, title, description, FieldValue.serverTimestamp(), category, pi[0], pi[1], pi[2]);
-        Toast.makeText(getApplicationContext(), p.toString(), Toast.LENGTH_LONG).show();
         if (type.toLowerCase().equals("good")) {
             db.collection("products").document(type.toLowerCase()).collection(category.toLowerCase())
                     .document("temp").collection("good_price").add(p);
