@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -36,7 +37,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 
 public class PostingActivity extends AppCompatActivity {
@@ -49,10 +53,11 @@ public class PostingActivity extends AppCompatActivity {
     private String[] list_categories;
     private String[] list_categories_good = {"Furniture", "Textbooks", "Clothes", "Misc."};
     private String[] list_categories_service = {"Tutoring", "Moving", "Haircuts", "Misc."};
+    private int imageNum;
     private static final int RESULT_LOAD_IMAGES = 1;
     Bundle extras;
 
-    private ArrayList<Uri> postingImages;
+    private HashMap<Integer, Uri> postingImages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +91,8 @@ public class PostingActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categories.setAdapter(adapter);
 
-        this.postingImages = new ArrayList<>();
+        this.postingImages = new HashMap<>();
+        imageNum = 0;
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
@@ -158,19 +164,51 @@ public class PostingActivity extends AppCompatActivity {
             // displaying all selected pictures in the linear layout (with horizontal scroll)
             LinearLayout layout = findViewById(R.id.imagesLinear);
             for (int i = 0; i < imageUris.size(); i++) {
-                ImageView imageView = new ImageView(this);
-                imageView.setId(i);
+                // create relative layout for image and remove image button
+                final RelativeLayout imageLayout = new RelativeLayout(this);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                imageLayout.setLayoutParams(params);
+                imageLayout.setId(imageNum);
+
+                // create imageview to hold uploaded image
+                final ImageView imageView = new ImageView(this);
+                imageView.setId(imageNum);
                 imageView.setPadding(0, 2, 20, 2);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,800);
-                imageView.setLayoutParams(params);
+                LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT, 800);
+                imageView.setLayoutParams(imageParams);
                 imageView.setImageURI(imageUris.get(i));
-
-                this.postingImages.add(imageUris.get(i));
-//                Log.d("TEST", imageUris.get(i).toString());
-
                 imageView.setAdjustViewBounds(true);
                 imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                layout.addView(imageView);
+
+                imageLayout.addView(imageView);
+
+                // create button to remove image
+                final ImageButton removeButton = new ImageButton(this);
+                removeButton.setImageResource(R.drawable.round_clear_black_18dp);
+                removeButton.setId(imageNum);
+                RelativeLayout.LayoutParams removeButtonParams = new RelativeLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                removeButtonParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 1);
+                removeButtonParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 1);
+                removeButton.setLayoutParams(removeButtonParams);
+                removeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((ViewManager)(imageLayout.getParent())).removeView(imageLayout);
+                        postingImages.remove(removeButton.getId());
+                    }
+                });
+
+                imageLayout.addView(removeButton);
+
+                // add image to list of images to post to database
+                this.postingImages.put(imageNum, imageUris.get(i));
+                //Log.d("TEST", imageUris.get(i).toString());
+
+                layout.addView(imageLayout);
+                imageNum++;
             }
 
             // make original "add pictures" button invisible
@@ -186,6 +224,8 @@ public class PostingActivity extends AppCompatActivity {
     private void addToDatabase (String title, String description, String category, String seller, Double price) throws IOException {
         int NUM_IMAGES_MAX = 3;
         String [] pi = new String [NUM_IMAGES_MAX];
+        Set<Integer> keys = this.postingImages.keySet();
+        Iterator<Integer> keyIter = keys.iterator();
 
         // Converts the uploaded image uri to bitmaps
         // bitmaps are converted to byte arrays
@@ -195,7 +235,8 @@ public class PostingActivity extends AppCompatActivity {
                 // use an empty string if an image isn't provided
                 pi[i] = "";
             } else {
-                Bitmap bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), this.postingImages.get(i)); // uri to bitmap
+                Bitmap bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(),
+                        this.postingImages.get(keyIter.next())); // uri to bitmap
                 pi[i] = Utility.encodeToString(bm); // bm to encoded base64 string
             }
         }

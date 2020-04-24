@@ -41,6 +41,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_weight="1"
                 android:background="@drawable/add_photos_button_border"
+                android:backgroundTint="@color/fui_buttonShadow"
                 android:clickable="true"
                 android:drawableStart="@drawable/ic_add_circle_outline_black_24dp"
                 android:drawablePadding="5dp"
@@ -49,7 +50,7 @@
                 android:onClick="uploadImages"
                 android:paddingLeft="120dp"
                 android:text="Add Photos"
-                android:visibility="visible"/>
+                android:visibility="visible" />
 
             <HorizontalScrollView
                 android:id="@+id/horizontalScrollImages"
