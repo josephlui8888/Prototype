@@ -33,7 +33,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
     private TextView test;
     private Spinner categories;
     private String[] list_categories_good = {"All goods", "Furniture", "Textbooks", "Clothes", "Misc."};
-    private String[] list_categories_service = {"All services", "Tutoring", "Moving", "Haircuts"};
+    private String[] list_categories_service = {"All services", "Tutoring", "Moving", "Haircuts", "Misc."};
     private String[] list_categories;
     private ArrayList<Product> data = new ArrayList<Product>();
 

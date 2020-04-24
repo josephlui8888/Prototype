@@ -17,10 +17,12 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,7 +48,7 @@ public class PostingActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private String[] list_categories;
     private String[] list_categories_good = {"Furniture", "Textbooks", "Clothes", "Misc."};
-    private String[] list_categories_service = {"Tutoring", "Moving", "Haircuts"};
+    private String[] list_categories_service = {"Tutoring", "Moving", "Haircuts", "Misc."};
     private static final int RESULT_LOAD_IMAGES = 1;
     Bundle extras;
 
@@ -84,6 +86,7 @@ public class PostingActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categories.setAdapter(adapter);
 
+        this.postingImages = new ArrayList<>();
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
@@ -154,7 +157,6 @@ public class PostingActivity extends AppCompatActivity {
 
             // displaying all selected pictures in the linear layout (with horizontal scroll)
             LinearLayout layout = findViewById(R.id.imagesLinear);
-            this.postingImages = new ArrayList<Uri>();
             for (int i = 0; i < imageUris.size(); i++) {
                 ImageView imageView = new ImageView(this);
                 imageView.setId(i);
@@ -164,16 +166,20 @@ public class PostingActivity extends AppCompatActivity {
                 imageView.setImageURI(imageUris.get(i));
 
                 this.postingImages.add(imageUris.get(i));
-                Log.d("TEST", imageUris.get(i).toString());
+//                Log.d("TEST", imageUris.get(i).toString());
 
                 imageView.setAdjustViewBounds(true);
                 imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 layout.addView(imageView);
             }
 
-            // make original "add pictures" view invisible
+            // make original "add pictures" button invisible
             Button uploadImages = findViewById(R.id.uploadImages);
-            uploadImages.setVisibility(View.GONE);
+            ((ViewManager)(uploadImages.getParent())).removeView(uploadImages);
+            uploadImages.setPadding(20, 0, 20, 0);
+            uploadImages.getLayoutParams().height = 700;
+            layout.addView(uploadImages);
+//            uploadImages.setVisibility(View.GONE);
         }
     }
 

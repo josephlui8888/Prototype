@@ -49,7 +49,7 @@
                 android:onClick="uploadImages"
                 android:paddingLeft="120dp"
                 android:text="Add Photos"
-                android:visibility="visible" />
+                android:visibility="visible"/>
 
             <HorizontalScrollView
                 android:id="@+id/horizontalScrollImages"
