@@ -1,5 +1,6 @@
 package com.example.springbreakprototype2;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -13,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -30,11 +32,14 @@ import android.widget.Toast;
 
 import com.example.springbreakprototype2.Utility;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,6 +55,7 @@ public class PostingActivity extends AppCompatActivity {
     private String type, title_value, description_value, category_value, user_name;
     private Double price_value;
     private FirebaseFirestore db;
+    private StorageReference storage;
     private String[] list_categories;
     private String[] list_categories_good = {"Furniture", "Textbooks", "Clothes", "Misc."};
     private String[] list_categories_service = {"Tutoring", "Moving", "Haircuts", "Misc."};
@@ -71,6 +77,7 @@ public class PostingActivity extends AppCompatActivity {
         categories = findViewById(R.id.categories);
 
         db = FirebaseFirestore.getInstance();
+        storage = FirebaseStorage.getInstance().getReference("app_images/");
 
         Intent intent = getIntent();
         extras = intent.getExtras();
@@ -93,9 +100,6 @@ public class PostingActivity extends AppCompatActivity {
 
         this.postingImages = new HashMap<>();
         imageNum = 0;
-
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference();
     }
 
     //Publish button, go back to home activity page
@@ -221,9 +225,9 @@ public class PostingActivity extends AppCompatActivity {
         }
     }
 
-    private void addToDatabase (String title, String description, String category, String seller, Double price) throws IOException {
+    private void addToDatabase (final String title, final String description, final String category, final String seller, final Double price) throws IOException {
         int NUM_IMAGES_MAX = 3;
-        String [] pi = new String [NUM_IMAGES_MAX];
+        final String [] pi = new String [NUM_IMAGES_MAX];
         Set<Integer> keys = this.postingImages.keySet();
         Iterator<Integer> keyIter = keys.iterator();
 
@@ -235,13 +239,58 @@ public class PostingActivity extends AppCompatActivity {
                 // use an empty string if an image isn't provided
                 pi[i] = "";
             } else {
-                Bitmap bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(),
-                        this.postingImages.get(keyIter.next())); // uri to bitmap
-                pi[i] = Utility.encodeToString(bm); // bm to encoded base64 string
+                Uri current = this.postingImages.get(keyIter.next());
+                //Bitmap bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), current); // uri to bitmap
+                //pi[i] = Utility.encodeToString(bm); // bm to encoded base64 string
+
+                // upload to storage
+                String filename = seller.replaceAll("\\W+","") + "_" + title.replaceAll("\\W+","") + "_" + i + "_" + System.currentTimeMillis();
+                final StorageReference sr = this.storage.child(filename);
+                final int finalI = i;
+                sr.putFile(current)
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                sr.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        // Get a URL to the uploaded content
+                                        pi[finalI] = uri.toString();
+                                        //Toast.makeText(getApplicationContext(), "Successful upload to storage: " + pi[finalI] , Toast.LENGTH_LONG).show();
+                                        finish();
+                                        return;
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception exception) {
+                                        finish();
+                                        return;
+                                    }
+                                });
+
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                Toast.makeText(getApplicationContext(), "Failed to upload image to storage", Toast.LENGTH_LONG).show();
+                            }
+                        });
             }
         }
 
-        Product p = new Product(price, seller, title, description, FieldValue.serverTimestamp(), category, pi[0], pi[1], pi[2]);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                actualUpload( title,  description,  category,  seller,  price,  pi[0],  pi[1],  pi[2]);
+            }
+        }, 5000);
+
+    }
+
+    // actually pushes data to database
+    private void actualUpload(String title, String description, String category, String seller, Double price, String one, String two, String three) {
+        Product p = new Product(price, seller, title, description, FieldValue.serverTimestamp(), category, one, two, three);
         if (type.toLowerCase().equals("good")) {
             db.collection("products").document(type.toLowerCase()).collection(category.toLowerCase())
                     .document("temp").collection("good_price").add(p);
@@ -249,10 +298,6 @@ public class PostingActivity extends AppCompatActivity {
             db.collection("products").document(type.toLowerCase()).collection(category.toLowerCase())
                     .document("temp").collection("service_price").add(p);
         }
-
     }
-
-
-
 
 }

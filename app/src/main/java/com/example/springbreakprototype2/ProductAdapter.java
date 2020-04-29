@@ -3,6 +3,7 @@ package com.example.springbreakprototype2;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,9 +52,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         }
         holder.textView3.setText(s);
 
-        // convert image from base64 String to image
-        String encodedImage = data[position].getThumbnailImage();
-        Bitmap image = Utility.decodeToImage(encodedImage);
+        // convert image from url to image
+        String url = data[position].getThumbnailImage();
+        Log.d("TEST", "Thumbnail URL: " + url);
+        Bitmap image = Utility.LoadImageFromWebOperations(url);
         holder.imageView.setImageBitmap(image);
         holder.bind(data[position], listener);
     }
