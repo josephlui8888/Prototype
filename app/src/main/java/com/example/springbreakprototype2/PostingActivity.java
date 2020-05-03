@@ -165,6 +165,12 @@ public class PostingActivity extends AppCompatActivity {
                 imageUris.add(data.getData());
             }
 
+            if(postingImages.size() == 0) {
+                // make original "add pictures" button invisible
+                Button uploadImages = findViewById(R.id.uploadImages);
+                uploadImages.setVisibility(View.GONE);
+            }
+
             // displaying all selected pictures in the linear layout (with horizontal scroll)
             LinearLayout layout = findViewById(R.id.imagesLinear);
             for (int i = 0; i < imageUris.size(); i++) {
@@ -202,6 +208,13 @@ public class PostingActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         ((ViewManager)(imageLayout.getParent())).removeView(imageLayout);
                         postingImages.remove(removeButton.getId());
+                        if(postingImages.size() == 0){
+                            Button smallUploadImages = findViewById(R.id.smallUploadImages);
+                            smallUploadImages.setVisibility(View.GONE);
+                            TextView goodService = findViewById(R.id.good_service);
+                            Button uploadImages = findViewById(R.id.uploadImages);
+                            uploadImages.setVisibility(View.VISIBLE);
+                        }
                     }
                 });
 
@@ -215,12 +228,11 @@ public class PostingActivity extends AppCompatActivity {
                 imageNum++;
             }
 
-            // make original "add pictures" button invisible
-            Button uploadImages = findViewById(R.id.uploadImages);
-            ((ViewManager)(uploadImages.getParent())).removeView(uploadImages);
-            uploadImages.setPadding(20, 0, 20, 0);
-            uploadImages.getLayoutParams().height = 700;
-            layout.addView(uploadImages);
+            // make smaller upload images button visible at end of pictures layout
+            Button smallUploadImages = findViewById(R.id.smallUploadImages);
+            ((ViewManager)(smallUploadImages.getParent())).removeView(smallUploadImages);
+            smallUploadImages.setVisibility(View.VISIBLE);
+            layout.addView(smallUploadImages);
 //            uploadImages.setVisibility(View.GONE);
         }
     }
