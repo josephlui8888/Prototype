@@ -199,14 +199,14 @@ public class PostingActivity extends AppCompatActivity {
 
                 // create button to remove image
                 final ImageButton removeButton = new ImageButton(this);
-                removeButton.setImageResource(R.drawable.round_clear_white_48);
+                removeButton.setImageResource(R.drawable.round_clear_24);
                 removeButton.setAdjustViewBounds(true);
                 removeButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                removeButton.setPadding(5, 5, 5, 5);
-                removeButton.setBackgroundColor(Color.BLACK);
+                removeButton.setPadding(4, 4, 4, 4);
+                removeButton.setBackground(getDrawable(R.drawable.round_corner));
                 removeButton.setId(imageNum);
                 RelativeLayout.LayoutParams removeButtonParams = new RelativeLayout.LayoutParams(
-                        80, 80);
+                        65, 65);
                 removeButtonParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 1);
                 removeButtonParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 1);
                 removeButton.setLayoutParams(removeButtonParams);
