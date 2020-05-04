@@ -12,6 +12,7 @@ import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,6 +23,7 @@ import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -178,15 +180,16 @@ public class PostingActivity extends AppCompatActivity {
                 final RelativeLayout imageLayout = new RelativeLayout(this);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                params.setMargins(0, 0, 20, 0);
                 imageLayout.setLayoutParams(params);
                 imageLayout.setId(imageNum);
 
                 // create imageview to hold uploaded image
                 final ImageView imageView = new ImageView(this);
                 imageView.setId(imageNum);
-                imageView.setPadding(0, 2, 20, 2);
+                imageView.setPadding(0, 20, 20, 2);
                 LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT, 800);
+                        ViewGroup.LayoutParams.MATCH_PARENT, 550);
                 imageView.setLayoutParams(imageParams);
                 imageView.setImageURI(imageUris.get(i));
                 imageView.setAdjustViewBounds(true);
@@ -196,10 +199,14 @@ public class PostingActivity extends AppCompatActivity {
 
                 // create button to remove image
                 final ImageButton removeButton = new ImageButton(this);
-                removeButton.setImageResource(R.drawable.round_clear_black_18dp);
+                removeButton.setImageResource(R.drawable.round_clear_white_48);
+                removeButton.setAdjustViewBounds(true);
+                removeButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                removeButton.setPadding(5, 5, 5, 5);
+                removeButton.setBackgroundColor(Color.BLACK);
                 removeButton.setId(imageNum);
                 RelativeLayout.LayoutParams removeButtonParams = new RelativeLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        80, 80);
                 removeButtonParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 1);
                 removeButtonParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 1);
                 removeButton.setLayoutParams(removeButtonParams);
@@ -211,7 +218,8 @@ public class PostingActivity extends AppCompatActivity {
                         if(postingImages.size() == 0){
                             Button smallUploadImages = findViewById(R.id.smallUploadImages);
                             smallUploadImages.setVisibility(View.GONE);
-                            TextView goodService = findViewById(R.id.good_service);
+                            HorizontalScrollView images = findViewById(R.id.horizontalScrollImages);
+                            images.setVisibility(View.GONE);
                             Button uploadImages = findViewById(R.id.uploadImages);
                             uploadImages.setVisibility(View.VISIBLE);
                         }
@@ -233,7 +241,10 @@ public class PostingActivity extends AppCompatActivity {
             ((ViewManager)(smallUploadImages.getParent())).removeView(smallUploadImages);
             smallUploadImages.setVisibility(View.VISIBLE);
             layout.addView(smallUploadImages);
-//            uploadImages.setVisibility(View.GONE);
+
+            // make scrolling images view visible
+            HorizontalScrollView images = findViewById(R.id.horizontalScrollImages);
+            images.setVisibility(View.VISIBLE);
         }
     }
 
