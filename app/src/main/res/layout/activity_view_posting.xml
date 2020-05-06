@@ -39,27 +39,6 @@
                 app:tabPaddingStart="9dp" />
 
             <TextView
-                android:id="@+id/viewPostingSeller"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="TextView"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/viewPostingCategory" />
-
-            <TextView
-                android:id="@+id/viewPostingCategory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="TextView"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/viewPostingDescription" />
-
-            <TextView
                 android:id="@+id/viewPostingTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -75,6 +54,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/viewPostingPrice" />
 
             <TextView
+                android:id="@+id/viewPostingPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="TextView"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+
+            <TextView
                 android:id="@+id/viewPostingDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -88,15 +78,25 @@
                 app:layout_constraintTop_toBottomOf="@+id/viewPostingTitle" />
 
             <TextView
-                android:id="@+id/viewPostingPrice"
+                android:id="@+id/viewPostingCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="TextView"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/viewPostingDescription" />
+
+            <TextView
+                android:id="@+id/viewPostingSeller"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="TextView"
                 android:textSize="18sp"
-                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/viewPostingCategory" />
 
             <TextView
                 android:id="@+id/viewPostingTime"
