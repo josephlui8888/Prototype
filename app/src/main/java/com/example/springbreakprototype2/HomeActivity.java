@@ -6,6 +6,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,6 +46,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private BottomNavigationView bottomNav;
+    private SwipeRefreshLayout swipeContainer;
 
     private FirebaseFirestore db;
 
@@ -99,6 +101,17 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
         //Toast.makeText(getApplicationContext(), "here", Toast.LENGTH_LONG).show();
+
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshListing();
+                swipeContainer.setRefreshing(false);
+            }
+        });
+
+        swipeContainer.setColorSchemeResources(android.R.color.holo_red_light);
 
         //it's time for a nav bar
         bottomNav = findViewById(R.id.bottom_navigation);
