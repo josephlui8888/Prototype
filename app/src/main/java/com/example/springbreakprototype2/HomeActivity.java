@@ -264,13 +264,13 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
         if (upper_price2 == -1)
             upper_price2 = Double.MAX_VALUE;
 
-        if (sort_by.equals("Recent First")) {
+        if (sort_by.equals("Newest First")) {
             //Need to add timestamp to sort
             q =list_items.whereGreaterThanOrEqualTo("price", lower_price).whereLessThanOrEqualTo("price", upper_price2);
-        } else if (sort_by.equals("Price low -> high")) {
+        } else if (sort_by.equals("Price - Low to High")) {
             q = list_items.whereGreaterThanOrEqualTo("price", lower_price).whereLessThanOrEqualTo("price", upper_price2)
                     .orderBy("price", Query.Direction.ASCENDING);
-        } else if (sort_by.equals("Price high -> low")) {
+        } else if (sort_by.equals("Price - High to Low")) {
             q = list_items.whereGreaterThanOrEqualTo("price", lower_price).whereLessThanOrEqualTo("price", upper_price2)
                     .orderBy("price", Query.Direction.DESCENDING);
         } else {
@@ -330,9 +330,9 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         }
         Product[] myDataset = new Product[data.size()];
-        if (sorting.equals("Recent First")) {
+        if (sorting.equals("Newest First")) {
             Product.setSortMethod("Recent");
-        } else if (sorting.equals("Price high -> low")) {
+        } else if (sorting.equals("Price - High to Low")) {
             Product.setSortMethod("Price descending");
         } else {
             Product.setSortMethod("Price Ascending");
@@ -384,7 +384,7 @@ public class HomeActivity extends AppCompatActivity implements AdapterView.OnIte
             //Log.d(TAG, document.getId() + " => " + document.getData());
         }
         Product[] myDataset = new Product[data.size()];
-        if (sorting.equals("Recent First")) {
+        if (sorting.equals("Newest First")) {
             Product.setSortMethod("Recent");
             Collections.sort(data);
         }

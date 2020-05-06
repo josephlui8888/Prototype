@@ -47,9 +47,9 @@ public class FilterActivity extends AppCompatActivity {
             upper_price.getEditText().setText(upper_price_value.toString());
         }
         switch(sort_by_value) {
-            case "Recent First": sort_by.check(R.id.radioButtonRecentFirst); break;
-            case "Price low -> high": sort_by.check(R.id.radioButtonPriceLowHigh); break;
-            case "Price high -> low": sort_by.check(R.id.radioButtonPriceHighLow); break;
+            case "Newest First": sort_by.check(R.id.radioButtonRecentFirst); break;
+            case "Price - Low to High": sort_by.check(R.id.radioButtonPriceLowHigh); break;
+            case "Price - High to Low": sort_by.check(R.id.radioButtonPriceHighLow); break;
             default: sort_by.check(R.id.radioButtonRecentFirst);
         }
     }
