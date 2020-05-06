@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         extras.putDouble("LOWER_PRICE", -1);
         extras.putDouble("UPPER_PRICE", -1);
         extras.putString("CATEGORIES", "All items");
-        extras.putString("SORT_BY", "Recent First");
+        extras.putString("SORT_BY", "Newest First");
         extras.putString("GOOD_SERVICE", "good");
         extras.putString("USERNAME", "anonymous");
         intent.putExtras(extras);
